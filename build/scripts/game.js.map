@@ -1,0 +1,17 @@
+{
+  "version": 3,
+  "sources": [
+    "node_modules/browserify/node_modules/browser-pack/_prelude.js",
+    "src/index.js",
+    "src/states/Splash.js"
+  ],
+  "names": [],
+  "mappings": "AAAA;;;ACAA;;;;;;;;;;;;;;;;;;;;;;;;;;I,AAEM;iBAEL;;iBAAc;wBAAA;;sFAAA,AACP,MADO,AACD,KAAK,OADJ,AACW,MADX,AACiB,WADjB,AAC4B,AACzC;;QAAA,AAAK,MAAL,AAAW,IAAX,AAAe,4BAAf,AAAiC,AACjC;QAAA,AAAK,MAAL,AAAW,MAHE,AAGb,AAAiB;SACjB;;;;EANiB,O,AAAO;;AAS1B,IAAA,AAAI;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;I,ACXE;;;;;;;;;;;4BAEK,AACT;QAAA,AAAK,KAAL,AAAU,MAAV,AAAgB,UAAhB,AAA0B,oCAA1B,AAA8D,AAC9D;QAAA,AAAK,KAAL,AAAU,MAAV,AAAgB,UAAhB,AAA0B,AAC1B;;;;2BACQ,AACR;QAAA,AAAK,IAAL,AAAS,OAAT,AAAgB,GAAhB,AAAmB,GAAnB,AAAsB,AACtB;QAAA,AAAK,cAAc,KAAA,AAAK,IAAL,AAAS,OAAO,KAAA,AAAK,MAAL,AAAW,UAA3B,AAAqC,KAArC,AAA0C,KAA1C,AAA+C,UAAU,KAAzD,AAA8D,eAAjF,AAAmB,AAA6E,AAChG;;;;kCACe,AACf;WAAA,AAAQ,IAAR,AAAY,AACZ;;;;;EAZmB,O,AAAO;;kB,AAeb",
+  "file": "generated.js",
+  "sourceRoot": "",
+  "sourcesContent": [
+    "(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==\"function\"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error(\"Cannot find module '\"+o+\"'\");throw f.code=\"MODULE_NOT_FOUND\",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==\"function\"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})",
+    "import Splash from 'states/Splash';\n\nclass Game extends Phaser.Game {\n\n\tconstructor() {\n\t\tsuper(1117, 900, Phaser.AUTO, 'content', null);\n\t\tthis.state.add('Splash', Splash, false);\n\t\tthis.state.start('Splash');\n\t}\n}\n\nnew Game();\n",
+    "class Splash extends Phaser.State {\n\n\tpreload() {\n\t\tthis.load.atlas('button', '/assets/button_texture_atlas.png', 'assets/button_texture_atlas.json')\n\t\tthis.load.image('splash', '/assets/splash.jpg');\n\t}\n\tcreate() {\n\t\tthis.add.sprite(0, 0, 'splash');\n\t\tthis.startButton = this.add.button(this.world.centerX + 150, 730, 'button', this.actionOnClick, this);\n\t}\n\tactionOnClick() {\n\t\tconsole.log(\"Clicked!\");\n\t}\n}\n\nexport default Splash;\n"
+  ]
+}
