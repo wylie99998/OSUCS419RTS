@@ -14,10 +14,3 @@ export default class Preload extends Phaser.State {
         this.state.start('NorthKingdom');
     }
 }
-
-/*this.map = this.add.tilemap('north_kingdom');
-this.map.addTilesetImage('Tiny16', 'tiles');
-this.layer = this.map.createLayer(0);
-this.layer.scale.setTo(2, 2);
-this.layer.smoothed = false;
-this.layer.resizeWorld();*/

@@ -4,14 +4,14 @@ export default class Player extends Phaser.Sprite {
 
         // enable physics for the player
         this.game.physics.arcade.enableBody(this);
-        //this.player.scale.setTo(1.1);
+        this.scale.setTo(1.1);
         this.body.collideWorldBounds = true;
         this.game.physics.arcade.enable(this);
 
         // camera follows player
         this.game.camera.follow(this);
 
-        // animations for the player
+        // walking animations for the player
         this.animations.add("walk-left", [117, 118, 119, 120, 121, 122, 123, 124, 125], 8, true);
         this.animations.add("walk-right", [143, 144, 145, 146, 147, 148, 149, 150, 151], 8, true);
         this.animations.add("walk-up", [104, 105, 106, 107, 108, 109, 110, 111, 112], 8, true);
@@ -19,7 +19,6 @@ export default class Player extends Phaser.Sprite {
 
         // create control inputs for player
         this.cursors = this.game.input.keyboard.createCursorKeys();
-
     }
     update() {
         this.body.velocity.x = 0;

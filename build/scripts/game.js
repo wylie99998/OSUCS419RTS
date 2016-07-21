@@ -9,10 +9,6 @@ var _Preload = require('states/Preload');
 
 var _Preload2 = _interopRequireDefault(_Preload);
 
-var _GameState = require('states/GameState');
-
-var _GameState2 = _interopRequireDefault(_GameState);
-
 var _NorthKingdom = require('levels/NorthKingdom');
 
 var _NorthKingdom2 = _interopRequireDefault(_NorthKingdom);
@@ -49,7 +45,6 @@ var Game = function (_Phaser$Game) {
 
 		_this.state.add('Boot', _Boot2.default, false);
 		_this.state.add('Preload', _Preload2.default, false);
-		_this.state.add('GameState', _GameState2.default, false);
 		_this.state.add('NorthKingdom', _NorthKingdom2.default, false);
 		_this.state.start('Boot');
 		return _this;
@@ -60,101 +55,199 @@ var Game = function (_Phaser$Game) {
 
 new Game();
 
-},{"levels/NorthKingdom":2,"states/Boot":4,"states/GameState":5,"states/Preload":6}],2:[function(require,module,exports){
+},{"levels/NorthKingdom":2,"states/Boot":5,"states/Preload":6}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-      value: true
+	value: true
 });
 
 var _createClass = function () {
-      function defineProperties(target, props) {
-            for (var i = 0; i < props.length; i++) {
-                  var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-            }
-      }return function (Constructor, protoProps, staticProps) {
-            if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-      };
+	function defineProperties(target, props) {
+		for (var i = 0; i < props.length; i++) {
+			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+		}
+	}return function (Constructor, protoProps, staticProps) {
+		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	};
 }();
 
 var _Player = require('prefabs/Player');
 
 var _Player2 = _interopRequireDefault(_Player);
 
+var _NPC = require('prefabs/NPC01');
+
+var _NPC2 = _interopRequireDefault(_NPC);
+
 function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : { default: obj };
+	return obj && obj.__esModule ? obj : { default: obj };
 }
 
 function _classCallCheck(instance, Constructor) {
-      if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-      }
+	if (!(instance instanceof Constructor)) {
+		throw new TypeError("Cannot call a class as a function");
+	}
 }
 
 function _possibleConstructorReturn(self, call) {
-      if (!self) {
-            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-      }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+	if (!self) {
+		throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	}return call && (typeof call === "object" || typeof call === "function") ? call : self;
 }
 
 function _inherits(subClass, superClass) {
-      if (typeof superClass !== "function" && superClass !== null) {
-            throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-      }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	if (typeof superClass !== "function" && superClass !== null) {
+		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
 var GameState = function (_Phaser$State) {
-      _inherits(GameState, _Phaser$State);
+	_inherits(GameState, _Phaser$State);
 
-      function GameState() {
-            _classCallCheck(this, GameState);
+	function GameState() {
+		_classCallCheck(this, GameState);
 
-            return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
-      }
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+	}
 
-      _createClass(GameState, [{
-            key: 'create',
-            value: function create() {
-                  // add map
-                  this.map = this.add.tilemap('north_kingdom');
-                  this.map.addTilesetImage('Tiny16', 'tiles');
+	_createClass(GameState, [{
+		key: 'preload',
+		value: function preload() {
+			this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 178);
+		}
+	}, {
+		key: 'create',
+		value: function create() {
+			// add map
+			this.map = this.add.tilemap('north_kingdom');
+			this.map.addTilesetImage('Tiny16', 'tiles');
 
-                  this.backgroundLayer = this.map.createLayer('backgroundLayer');
-                  this.backgroundLayer.scale.setTo(3.5, 3.5);
-                  this.backgroundLayer.resizeWorld();
-                  this.backgroundLayer.smoothed = false;
+			// add layers from map
+			this.backgroundLayer = this.map.createLayer('backgroundLayer');
+			this.backgroundLayer.scale.setTo(3.5, 3.5);
+			this.backgroundLayer.resizeWorld();
+			this.backgroundLayer.smoothed = false;
 
-                  this.blockedLayer = this.map.createLayer('blockedLayer');
-                  this.map.setCollisionBetween(1, 256, true, 'blockedLayer');
-                  this.blockedLayer.setScale(3.5, 3.5);
-                  this.blockedLayer.resizeWorld();
-                  this.blockedLayer.smoothed = false;
+			this.blockedLayer = this.map.createLayer('blockedLayer');
+			this.map.setCollisionBetween(1, 256, true, 'blockedLayer');
+			this.blockedLayer.setScale(3.5, 3.5);
+			this.blockedLayer.resizeWorld();
+			this.blockedLayer.smoothed = false;
 
-                  this.borderLayer = this.map.createLayer('borderLayer');
-                  this.borderLayer.scale.setTo(3.5, 3.5);
-                  this.borderLayer.resizeWorld();
-                  this.borderLayer.smoothed = false;
+			this.borderLayer = this.map.createLayer('borderLayer');
+			this.borderLayer.scale.setTo(3.5, 3.5);
+			this.borderLayer.resizeWorld();
+			this.borderLayer.smoothed = false;
 
-                  // add player
-                  this.player = new _Player2.default(this.game);
-                  this.add.existing(this.player);
-                  this.player.position.x = 1400;
-                  this.player.position.y = 1400;
-            }
-      }, {
-            key: 'update',
-            value: function update() {
-                  this.game.physics.arcade.collide(this.player, this.blockedLayer);
-            }
-      }]);
+			// add player
+			this.player = new _Player2.default(this.game);
+			this.add.existing(this.player);
+			this.player.position.x = 1400;
+			this.player.position.y = 1400;
 
-      return GameState;
+			// add npc
+			this.npc01 = new _NPC2.default(this.game);
+			this.add.existing(this.npc01);
+		}
+	}, {
+		key: 'update',
+		value: function update() {
+			this.game.physics.arcade.collide(this.player, this.blockedLayer);
+		}
+	}]);
+
+	return GameState;
 }(Phaser.State);
 
 exports.default = GameState;
 exports.default = GameState;
 
-},{"prefabs/Player":3}],3:[function(require,module,exports){
+/*var dialog;
+function create(){
+	// Beginning dialog for the cutscene
+	var diaText = "Hello!";	var subtext = "press \'a\'";
+	var style = {font: "22px Arial", fill:"white", align: "center"};
+	var style2 = {font: "10px Arial", fill:"white", align: "center"};
+	dialog = game.add.text(game.world.centerX-300, 400, diaText, style);
+	var tSub = game.add.text(game.world.centerX-300, 425, subtext, style2);}function update(){
+	// Cycle through the next line of dialog
+	if(this.game.input.keyboard.justPressed(Phaser.Keyboard.A)){
+		dialog.setText('It\'s nice to meet you!');
+	}
+}*/
+
+},{"prefabs/NPC01":3,"prefabs/Player":4}],3:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+}();
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
+
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var NPC01 = function (_Phaser$Sprite) {
+    _inherits(NPC01, _Phaser$Sprite);
+
+    function NPC01(game) {
+        _classCallCheck(this, NPC01);
+
+        // enable interaction with player
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NPC01).call(this, game, 1400, 500, 'npc01', 26));
+
+        _this.scale.setTo(1.1);
+        _this.inputEnabled = true;
+        _this.events.onInputDown.add(_this.dialogue, _this.game);
+        return _this;
+    }
+
+    _createClass(NPC01, [{
+        key: "update",
+        value: function update() {
+            // add idle animation
+        }
+    }, {
+        key: "dialogue",
+        value: function dialogue() {
+            this.greeting = "Hello!";
+            this.style = { font: "22px Arial", fill: "white", align: "center", backgroundColor: "000" };
+            this.dialog = this.add.text(this.world.centerX + 350, 500, this.greeting, this.style);
+        }
+    }]);
+
+    return NPC01;
+}(Phaser.Sprite);
+
+exports.default = NPC01;
+
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -200,14 +293,14 @@ var Player = function (_Phaser$Sprite) {
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Player).call(this, game, 0, 0, 'hero'));
 
         _this.game.physics.arcade.enableBody(_this);
-        //this.player.scale.setTo(1.1);
+        _this.scale.setTo(1.1);
         _this.body.collideWorldBounds = true;
         _this.game.physics.arcade.enable(_this);
 
         // camera follows player
         _this.game.camera.follow(_this);
 
-        // animations for the player
+        // walking animations for the player
         _this.animations.add("walk-left", [117, 118, 119, 120, 121, 122, 123, 124, 125], 8, true);
         _this.animations.add("walk-right", [143, 144, 145, 146, 147, 148, 149, 150, 151], 8, true);
         _this.animations.add("walk-up", [104, 105, 106, 107, 108, 109, 110, 111, 112], 8, true);
@@ -215,7 +308,6 @@ var Player = function (_Phaser$Sprite) {
 
         // create control inputs for player
         _this.cursors = _this.game.input.keyboard.createCursorKeys();
-
         return _this;
     }
 
@@ -255,7 +347,7 @@ var Player = function (_Phaser$Sprite) {
 
 exports.default = Player;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -318,88 +410,7 @@ var Boot = function (_Phaser$State) {
 
 exports.default = Boot;
 
-},{}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () {
-	function defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}return function (Constructor, protoProps, staticProps) {
-		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-	};
-}();
-
-var _NorthKingdom = require('levels/NorthKingdom');
-
-var _NorthKingdom2 = _interopRequireDefault(_NorthKingdom);
-
-var _Player = require('prefabs/Player');
-
-var _Player2 = _interopRequireDefault(_Player);
-
-function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
-}
-
-function _classCallCheck(instance, Constructor) {
-	if (!(instance instanceof Constructor)) {
-		throw new TypeError("Cannot call a class as a function");
-	}
-}
-
-function _possibleConstructorReturn(self, call) {
-	if (!self) {
-		throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	}return call && (typeof call === "object" || typeof call === "function") ? call : self;
-}
-
-function _inherits(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) {
-		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
-
-var GameState = function (_Phaser$State) {
-	_inherits(GameState, _Phaser$State);
-
-	function GameState() {
-		_classCallCheck(this, GameState);
-
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
-	}
-
-	_createClass(GameState, [{
-		key: 'create',
-		value: function create() {
-			this.physics.startSystem(Phaser.Physics.ARCADE);
-
-			//this.map = this.add.tilemap('north_kingdom');
-			//this.world.setBounds(0, 0, this.north_kingdom.widthInPixels, this.north_kingdom.heightInPixels);
-			//this.map.addTilesetImage('Tiny16', 'tiles');
-			//this.layer = this.map.createLayer(0);
-			//this.layer.scale.setTo(2, 2.7);
-			//this.layer.smoothed = false;
-
-			this.map = new _NorthKingdom2.default(this.game);
-
-			this.player = new _Player2.default(this.game);
-			this.add.existing(this.player);
-		}
-	}]);
-
-	return GameState;
-}(Phaser.State);
-
-exports.default = GameState;
-exports.default = GameState;
-
-},{"levels/NorthKingdom":2,"prefabs/Player":3}],6:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -467,13 +478,6 @@ var Preload = function (_Phaser$State) {
 
     return Preload;
 }(Phaser.State);
-
-/*this.map = this.add.tilemap('north_kingdom');
-this.map.addTilesetImage('Tiny16', 'tiles');
-this.layer = this.map.createLayer(0);
-this.layer.scale.setTo(2, 2);
-this.layer.smoothed = false;
-this.layer.resizeWorld();*/
 
 exports.default = Preload;
 
