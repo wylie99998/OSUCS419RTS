@@ -1,15 +1,17 @@
-import Splash from 'states/Splash';
-import Village from 'states/Village';
-import NorthKingdom from 'states/NorthKingdom';
+import Boot from 'states/Boot';
+import Preload from 'states/Preload';
+import GameState from 'states/GameState';
+import NorthKingdom from 'levels/NorthKingdom';
 
 class Game extends Phaser.Game {
 
 	constructor() {
-		super(800, 600, Phaser.AUTO, 'content', null);
-		this.state.add('Splash', Splash, false);
-		this.state.add('Village', Village, false);
+		super(960, 640, Phaser.AUTO, 'content', null);
+		this.state.add('Boot', Boot, false);
+		this.state.add('Preload', Preload, false);
+		this.state.add('GameState', GameState, false);
 		this.state.add('NorthKingdom', NorthKingdom, false);
-		this.state.start('Splash');
+		this.state.start('Boot');
 	}
 }
 

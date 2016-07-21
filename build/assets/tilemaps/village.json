@@ -96,11 +96,11 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"Tiny16-Complete-Spritesheet-Repack3.png",
+         "image":"Tiny16.png",
          "imageheight":256,
          "imagewidth":256,
          "margin":0,
-         "name":"Tiny16-Complete-Spritesheet-Repack3",
+         "name":"Tiny16",
          "spacing":0,
          "tilecount":256,
          "tileheight":16,

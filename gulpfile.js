@@ -53,7 +53,7 @@ function logBuildMode() {
  */
 function cleanBuild() {
     if (!keepFiles) {
-        del(['build/**/*.*']);
+        //del(['build/**/*.*']);
     } else {
         keepFiles = false;
     }
