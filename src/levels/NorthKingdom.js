@@ -4,6 +4,8 @@ import NPC01 from 'prefabs/NPC01';
 export default class GameState extends Phaser.State {
 	preload() {
 		this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 178);
+		this.load.text('dialogue', 'assets/dialogue/NPC01.json')
+
 	}
 	create() {
         // add map
@@ -43,17 +45,3 @@ export default class GameState extends Phaser.State {
 }
 
 export default GameState;
-
-/*var dialog;
-function create(){
-	// Beginning dialog for the cutscene
-	var diaText = "Hello!";	var subtext = "press \'a\'";
-	var style = {font: "22px Arial", fill:"white", align: "center"};
-	var style2 = {font: "10px Arial", fill:"white", align: "center"};
-	dialog = game.add.text(game.world.centerX-300, 400, diaText, style);
-	var tSub = game.add.text(game.world.centerX-300, 425, subtext, style2);}function update(){
-	// Cycle through the next line of dialog
-	if(this.game.input.keyboard.justPressed(Phaser.Keyboard.A)){
-		dialog.setText('It\'s nice to meet you!');
-	}
-}*/

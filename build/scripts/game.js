@@ -59,17 +59,17 @@ new Game();
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+						value: true
 });
 
 var _createClass = function () {
-	function defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}return function (Constructor, protoProps, staticProps) {
-		if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-	};
+						function defineProperties(target, props) {
+												for (var i = 0; i < props.length; i++) {
+																		var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+												}
+						}return function (Constructor, protoProps, staticProps) {
+												if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+						};
 }();
 
 var _Player = require('prefabs/Player');
@@ -81,104 +81,91 @@ var _NPC = require('prefabs/NPC01');
 var _NPC2 = _interopRequireDefault(_NPC);
 
 function _interopRequireDefault(obj) {
-	return obj && obj.__esModule ? obj : { default: obj };
+						return obj && obj.__esModule ? obj : { default: obj };
 }
 
 function _classCallCheck(instance, Constructor) {
-	if (!(instance instanceof Constructor)) {
-		throw new TypeError("Cannot call a class as a function");
-	}
+						if (!(instance instanceof Constructor)) {
+												throw new TypeError("Cannot call a class as a function");
+						}
 }
 
 function _possibleConstructorReturn(self, call) {
-	if (!self) {
-		throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	}return call && (typeof call === "object" || typeof call === "function") ? call : self;
+						if (!self) {
+												throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+						}return call && (typeof call === "object" || typeof call === "function") ? call : self;
 }
 
 function _inherits(subClass, superClass) {
-	if (typeof superClass !== "function" && superClass !== null) {
-		throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-	}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+						if (typeof superClass !== "function" && superClass !== null) {
+												throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+						}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
 var GameState = function (_Phaser$State) {
-	_inherits(GameState, _Phaser$State);
+						_inherits(GameState, _Phaser$State);
 
-	function GameState() {
-		_classCallCheck(this, GameState);
+						function GameState() {
+												_classCallCheck(this, GameState);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
-	}
+												return _possibleConstructorReturn(this, Object.getPrototypeOf(GameState).apply(this, arguments));
+						}
 
-	_createClass(GameState, [{
-		key: 'preload',
-		value: function preload() {
-			this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 178);
-		}
-	}, {
-		key: 'create',
-		value: function create() {
-			// add map
-			this.map = this.add.tilemap('north_kingdom');
-			this.map.addTilesetImage('Tiny16', 'tiles');
+						_createClass(GameState, [{
+												key: 'preload',
+												value: function preload() {
+																		this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 178);
+																		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
+												}
+						}, {
+												key: 'create',
+												value: function create() {
+																		// add map
+																		this.map = this.add.tilemap('north_kingdom');
+																		this.map.addTilesetImage('Tiny16', 'tiles');
 
-			// add layers from map
-			this.backgroundLayer = this.map.createLayer('backgroundLayer');
-			this.backgroundLayer.scale.setTo(3.5, 3.5);
-			this.backgroundLayer.resizeWorld();
-			this.backgroundLayer.smoothed = false;
+																		// add layers from map
+																		this.backgroundLayer = this.map.createLayer('backgroundLayer');
+																		this.backgroundLayer.scale.setTo(3.5, 3.5);
+																		this.backgroundLayer.resizeWorld();
+																		this.backgroundLayer.smoothed = false;
 
-			this.blockedLayer = this.map.createLayer('blockedLayer');
-			this.map.setCollisionBetween(1, 256, true, 'blockedLayer');
-			this.blockedLayer.setScale(3.5, 3.5);
-			this.blockedLayer.resizeWorld();
-			this.blockedLayer.smoothed = false;
+																		this.blockedLayer = this.map.createLayer('blockedLayer');
+																		this.map.setCollisionBetween(1, 256, true, 'blockedLayer');
+																		this.blockedLayer.setScale(3.5, 3.5);
+																		this.blockedLayer.resizeWorld();
+																		this.blockedLayer.smoothed = false;
 
-			this.borderLayer = this.map.createLayer('borderLayer');
-			this.borderLayer.scale.setTo(3.5, 3.5);
-			this.borderLayer.resizeWorld();
-			this.borderLayer.smoothed = false;
+																		this.borderLayer = this.map.createLayer('borderLayer');
+																		this.borderLayer.scale.setTo(3.5, 3.5);
+																		this.borderLayer.resizeWorld();
+																		this.borderLayer.smoothed = false;
 
-			// add player
-			this.player = new _Player2.default(this.game);
-			this.add.existing(this.player);
-			this.player.position.x = 1400;
-			this.player.position.y = 1400;
+																		// add player
+																		this.player = new _Player2.default(this.game);
+																		this.add.existing(this.player);
+																		this.player.position.x = 1400;
+																		this.player.position.y = 1400;
 
-			// add npc
-			this.npc01 = new _NPC2.default(this.game);
-			this.add.existing(this.npc01);
-		}
-	}, {
-		key: 'update',
-		value: function update() {
-			this.game.physics.arcade.collide(this.player, this.blockedLayer);
-		}
-	}]);
+																		// add npc
+																		this.npc01 = new _NPC2.default(this.game);
+																		this.add.existing(this.npc01);
+												}
+						}, {
+												key: 'update',
+												value: function update() {
+																		this.game.physics.arcade.collide(this.player, this.blockedLayer);
+												}
+						}]);
 
-	return GameState;
+						return GameState;
 }(Phaser.State);
 
 exports.default = GameState;
 exports.default = GameState;
 
-/*var dialog;
-function create(){
-	// Beginning dialog for the cutscene
-	var diaText = "Hello!";	var subtext = "press \'a\'";
-	var style = {font: "22px Arial", fill:"white", align: "center"};
-	var style2 = {font: "10px Arial", fill:"white", align: "center"};
-	dialog = game.add.text(game.world.centerX-300, 400, diaText, style);
-	var tSub = game.add.text(game.world.centerX-300, 425, subtext, style2);}function update(){
-	// Cycle through the next line of dialog
-	if(this.game.input.keyboard.justPressed(Phaser.Keyboard.A)){
-		dialog.setText('It\'s nice to meet you!');
-	}
-}*/
-
 },{"prefabs/NPC01":3,"prefabs/Player":4}],3:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -224,21 +211,41 @@ var NPC01 = function (_Phaser$Sprite) {
 
         _this.scale.setTo(1.1);
         _this.inputEnabled = true;
-        _this.events.onInputDown.add(_this.dialogue, _this.game);
+        _this.events.onInputDown.add(_this.startConversation, _this);
         return _this;
     }
 
     _createClass(NPC01, [{
-        key: "update",
-        value: function update() {
-            // add idle animation
+        key: 'startConversation',
+        value: function startConversation() {
+            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.id = this.game.dialogue.start;
+            this.start = this.game.dialogue['elements'][this.id];
+            this.style = { font: "22px Arial", fill: "white", align: "center", backgroundColor: "000" };
+            //this.game.add.text(this.game.world.centerX+350, 500, this.start.npc, this.style);
+            this.character = this.game.dialogue.name;
+            this.updateConversation(this.start, this.character);
         }
     }, {
-        key: "dialogue",
-        value: function dialogue() {
-            this.greeting = "Hello!";
+        key: 'updateConversation',
+        value: function updateConversation(id, character) {
+            if (character == "NPC01") {
+                character = "";
+                this.message = id.npc;
+                this.showConversation(id.player["1424791491948"], this.message);
+            } else {
+                character = this.game.dialogue.name;
+                this.message = id.text;
+                id = this.game.dialogue['elements']['1424791562420'];
+                this.showConversation(id, this.message);
+            }
+        }
+    }, {
+        key: 'showConversation',
+        value: function showConversation(id, message) {
+            this.game.add.text(this.game.world.centerX + 350, 500, message, this.style);
             this.style = { font: "22px Arial", fill: "white", align: "center", backgroundColor: "000" };
-            this.dialog = this.add.text(this.world.centerX + 350, 500, this.greeting, this.style);
+            this.updateConversation(id);
         }
     }]);
 
