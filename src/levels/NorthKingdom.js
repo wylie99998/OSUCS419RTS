@@ -1,11 +1,11 @@
 import Player from 'prefabs/Player';
 import NPC01 from 'prefabs/NPC01';
 
-export default class GameState extends Phaser.State {
+export default class NorthKingdom extends Phaser.State {
 	preload() {
 		this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 178);
-		this.load.text('dialogue', 'assets/dialogue/NPC01.json')
-
+		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
+		this.load.text('characters', 'assets/characters.json');
 	}
 	create() {
         // add map
@@ -33,7 +33,7 @@ export default class GameState extends Phaser.State {
 		this.player = new Player(this.game);
 		this.add.existing(this.player);
 		this.player.position.x = 1400;
-		this.player.position.y = 1400;
+		this.player.position.y = 600; // reset back to 1400
 
 		// add npc
 		this.npc01 = new NPC01(this.game);
@@ -43,5 +43,3 @@ export default class GameState extends Phaser.State {
         this.game.physics.arcade.collide(this.player, this.blockedLayer);
     }
 }
-
-export default GameState;

@@ -4,32 +4,13 @@
     "start": "1424791485315",
     "elements": {
         "1424791485315": {
-            "npc": "Hello",
-            "player": {
-                "1424791491948": {
-                    "text": "Nice to meet you",
-                    "followup": "1424791562420"
-                },
-                "1424791514604": {
-                    "text": "I need instructions on where to go.",
-                    "followup": "1424791601252"
-                }
-            }
-        },
-        "1424791562420": {
-            "npc": "Nice to meet you too!"
-        },
-        "1424791601252": {
-            "npc": "I'll need to ask you a series of questions.",
-            "player": {
-                "1424791743218": {
-                    "text": "Okay, I am ready!",
-                    "followup": "1424791562411"
-                },
-                "1424791562411": {
-                    "text": "No, thank you"
-                }
-            }
+            "npc": "In the first episode, Robert Baratheon says 'In my dreams,\n I kill him every night.' Who is the King referring to and why?",
+            "character": [
+                {"a": "a. Rhaegar Targaryen because he married Elia Martell\n"},
+                {"b": "b. Aerys Targaryen because he killed Robert's brother\n"},
+                {"c": "c. Rhaegar Targaryen because he kidnapped Lyanna Stark\n"},
+                {"d": "d. Aerys Targaryen because he got Lyanna Stark pregnant\n"}
+            ]
         }
     }
 }
