@@ -6,11 +6,57 @@
         "1424791485315": {
             "npc": "In the first episode, Robert Baratheon says 'In my dreams,\n I kill him every night.' Who is the King referring to and why?",
             "character": [
-                {"a": "a. Rhaegar Targaryen because he married Elia Martell\n"},
-                {"b": "b. Aerys Targaryen because he killed Robert's brother\n"},
-                {"c": "c. Rhaegar Targaryen because he kidnapped Lyanna Stark\n"},
-                {"d": "d. Aerys Targaryen because he got Lyanna Stark pregnant\n"}
-            ]
+                {"0": "1. Rhaegar Targaryen because he married Elia Martell\n"},
+                {"1": "2. Aerys Targaryen because he killed Robert's brother\n"},
+                {"2": "3. Rhaegar Targaryen because he kidnapped Lyanna Stark\n"},
+                {"3": "4. Aerys Targaryen because he got Lyanna Stark pregnant\n"}
+            ],
+            "correct": "3. Rhaegar Targaryen because he kidnapped Lyanna Stark\n",
+            "followup": "1424791491948"
+        },
+        "1424791491948": {
+            "npc": "Who kills Robb Stark?\n",
+            "character": [
+                {"0": "1. Edmure Tully\n"},
+                {"1": "2. Roose Bolton\n"},
+                {"2": "3. Ramsey Bolton\n"},
+                {"3": "4. Walder Frey\n"}
+            ],
+            "correct": "2. Roose Bolton\n",
+            "followup": "1424791514604"
+        },
+        "1424791514604": {
+            "npc": "Who kills Catelyn Stark?\n",
+            "character": [
+                {"0": "1. Roose Bolton\n"},
+                {"1": "2. Black Walder Rivers\n"},
+                {"2": "3. Sandor Clegane\n"},
+                {"3": "4. Walder Frey\n"}
+            ],
+            "correct": "3. Sandor Clegane\n",
+            "followup": "1424791562420"
+        },
+        "1424791562420": {
+            "npc": "Who is not on Arya Stark's list?\n",
+            "character": [
+                {"0": "1. Ilyn Payne\n"},
+                {"1": "2. Varys\n"},
+                {"2": "3. Cersei Lannister\n"},
+                {"3": "4. Joffery Baratheon\n"}
+            ],
+            "correct": "2. Varys\n",
+            "followup": "1424791601252"
+        },
+        "1424791601252": {
+            "npc": "Who helps Arya escape after her father is executed?\n",
+            "character": [
+                {"0": "1. Robb Stark\n"},
+                {"1": "2. Sir Meryn Trant\n"},
+                {"2": "3. Yoren\n"},
+                {"3": "4. Petyr Baelish\n"}
+            ],
+            "correct": "3. Yoren\n",
+            "followup": ""
         }
     }
 }

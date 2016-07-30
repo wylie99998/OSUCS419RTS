@@ -217,90 +217,82 @@ var NPC01 = function (_Phaser$Sprite) {
         _this.scale.setTo(1.1);
         _this.inputEnabled = true;
         _this.events.onInputDown.add(_this.startDialogue, _this);
-        //this.events.onInputDown.add(this.assignParty, this);
         return _this;
     }
-    /*assignParty() {
-        this.party = [
-            { name: 'sara' },
-            { name: 'ultimate_defender'}
-        ]
-        this.startBattle(this.party)
-    }
-    startBattle(party) {
-        this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-        this.game.state.start('Battle', true, false, party)
-    }*/
 
     _createClass(NPC01, [{
         key: 'startDialogue',
         value: function startDialogue() {
             this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.totalCorrect = 0;
+            this.party = [];
             this.id = this.game.dialogue.start;
-            this.question = this.game.dialogue['elements'][this.id];
-            this.style = { font: "22px Arial", fill: "white", align: "center", backgroundColor: "000" };
-            this.game.add.text(this.game.world.centerX + 20, 350, this.question.npc, this.style);
-            this.showDialogue(this.game.dialogue, this.question);
+            this.showDialogue(this.game.dialogue, this.id);
         }
     }, {
         key: 'showDialogue',
-        value: function showDialogue(dialogue, message) {
-            this.style = { font: "22px Arial", fill: "white", align: "center", backgroundColor: "000" };
-            // use a for loop to iterate through all answers.
-            for (var i in dialogue['elements'][this.game.dialogue.start].character) {
-                console.log(dialogue['elements'][this.game.dialogue.start].character[i]);
-            }
-            /*this.answer1 = this.game.add.text(this.game.world.centerX+20, 420, this.message.character.a, this.style);
-            this.answer1.inputEnabled = true;
-            this.answer1.events.onInputDown.add(this.actionOnClick, this);
-             this.answer2 = this.game.add.text(this.game.world.centerX+20, 480, this.message.character.b, this.style);
-            this.answer2.inputEnabled = true;
-             this.answer3 = this.game.add.text(this.game.world.centerX+20, 540, this.message.character.c, this.style);
-            this.answer3.inputEnabled = true;
-             this.answer4 = this.game.add.text(this.game.world.centerX+20, 600, this.message.character.d, this.style);
-            this.answer4.inputEnabled = true;*/
+        value: function showDialogue(dialogue, id) {
+            var x = 20,
+                y = 350;
 
-            this.updateDialogue(dialogue);
+            // show question
+            var question = dialogue['elements'][id].npc;
+            this.style = {
+                font: "22px Arial",
+                fill: "white",
+                align: "center",
+                backgroundColor: "000"
+            };
+            this.question = this.game.add.text(this.game.world.centerX + x, y, question, this.style);
+
+            // show answers and add input to click
+            var answers = dialogue['elements'][id].character;
+            this.answers_set = [];
+            for (var i in answers) {
+                this.answers_set[i] = this.game.add.text(this.game.world.centerX + x, y += 60, answers[i][i], this.style);
+                this.answers_set[i].inputEnabled = true;
+                this.answers_set[i].events.onInputDown.add(this.checkAnswer, this);
+            }
+        }
+    }, {
+        key: 'checkAnswer',
+        value: function checkAnswer(selected) {
+            var selectedAnswer = selected.text;
+            var correctAnswer = this.game.dialogue['elements'][this.id].correct;
+            if (selectedAnswer == correctAnswer) {
+                this.assignParty();
+            } else {
+                console.log("You got it wrong...");
+            }
+            this.updateDialogue();
         }
     }, {
         key: 'updateDialogue',
-        value: function updateDialogue(dialogue) {}
+        value: function updateDialogue() {
+            // update id to point to next question
+            this.id = this.game.dialogue['elements'][this.id].followup;
+            if (this.id == "") {
+                this.startBattle(this.party);
+            }
+
+            // remove question and answers from game
+            this.question.destroy();
+            this.answers_set.forEach(function (answer) {
+                answer.destroy();
+            });
+            this.showDialogue(this.game.dialogue, this.id);
+        }
     }, {
-        key: 'actionOnClick',
-        value: function actionOnClick() {
-            console.log('clicked');
+        key: 'assignParty',
+        value: function assignParty() {
+            this.party.push({ name: 'thief' });
         }
-
-        /*startConversation() {
+    }, {
+        key: 'startBattle',
+        value: function startBattle(party) {
             this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-            this.id = this.game.dialogue.start;
-            this.convo = this.game.dialogue['elements'][this.id];
-            this.style = {font: "22px Arial", fill: "white", align: "center", backgroundColor: "000"};
-            this.game.add.text(this.game.world.centerX+350, 500, this.convo.npc, this.style);
-            this.character = "";
-            this.updateConversation(this.convo.player, this.character);
+            this.game.state.start('Battle', true, false, party);
         }
-        updateConversation(convo, character) {
-            if (character == "NPC01") {
-                character = "";
-                this.message = convo.npc;
-                this.showConversation(convo.player["1424791491948"], this.message, character);
-            } else {
-                character = this.game.dialogue.name;
-                convo = this.game.dialogue['elements']['convo'];
-                this.showConversation(convo, this.message, character);
-            }
-        }
-        showConversation(convo, message, character) {
-            this.game.add.text(this.game.world.centerX+350, 500, message, this.style);
-            this.style = {font: "22px Arial", fill: "white", align: "center", backgroundColor: "000"};
-            if (character == "NPC01") {
-                this.updateConversation(convo, character)
-            } else {
-                this.updateConversation(convo['followup'], character);
-            }
-        }*/
-
     }]);
 
     return NPC01;
@@ -436,10 +428,10 @@ function _inherits(subClass, superClass) {
 var PlayerUnit = function (_Phaser$Sprite) {
     _inherits(PlayerUnit, _Phaser$Sprite);
 
-    function PlayerUnit(game, x, y, asset) {
+    function PlayerUnit(game, x, y, asset, stats) {
         _classCallCheck(this, PlayerUnit);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerUnit).call(this, game, x, y, asset, 0));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerUnit).call(this, game, x, y, asset, stats, 0));
 
         _this.scale.setTo(1.2);
         _this.smoothed = false;
@@ -447,10 +439,9 @@ var PlayerUnit = function (_Phaser$Sprite) {
 
         _this.animations.add("attack", [0, 1, 2, 3, 4, 5, 0], 8, false);
         _this.animations.play("attack");
-
-        _this.hitpoints = 400;
-        _this.defense = 50;
-        _this.attack = 10;
+        _this.attack = stats.attack;
+        _this.defense = stats.defense;
+        _this.health = stats.health;
         return _this;
     }
 
@@ -521,11 +512,12 @@ var Battle = function (_Phaser$State) {
         value: function preload() {
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
+
             // load characters in party
             for (var character in assets) {
-                //console.log(assets_data.assets[assets[character].name]);
                 this.load.spritesheet(assets[character].name, assets_data.assets[assets[character].name].source, assets_data.assets[assets[character].name].width, assets_data.assets[assets[character].name].height, 12);
             }
+            this.load.spritesheet('ultimate_defender', assets_data.assets['ultimate_defender'].source, assets_data.assets['ultimate_defender'].width, assets_data.assets['ultimate_defender'].height, 12);
         }
     }, {
         key: 'create',
@@ -540,14 +532,37 @@ var Battle = function (_Phaser$State) {
             var assets_data = JSON.parse(this.cache.getText('characters'));
             var prefabs = [];
             for (var character in assets) {
-                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs[assets[character].name].position.x, assets_data.prefabs[assets[character].name].position.y, assets[character].name);
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs[assets[character].name].position.x, assets_data.prefabs[assets[character].name].position.y += 100, assets[character].name, assets_data.prefabs[assets[character].name].properties.stats);
                 prefabs.push(this.character);
                 this.add.existing(this.character);
             }
             delete this.character;
+
+            // create opponent's party
+            for (var character in assets) {
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['ultimate_defender'].position.x, assets_data.prefabs['ultimate_defender'].position.y += 100, 'ultimate_defender', assets_data.prefabs['ultimate_defender'].properties.stats);
+                prefabs.push(this.character);
+                this.add.existing(this.character);
+            }
+            delete this.character;
+
+            this.whoseTurn(prefabs);
             //this.whoseTurn = this.sara.name;
 
             //this.ultimate_defender.events.onInputDown.add(this.effect, this);
+        }
+    }, {
+        key: 'whoseTurn',
+        value: function whoseTurn(prefabs) {
+            this.current_unit = prefabs.shift();
+            //this.attack(this.current_unit);
+            console.log(prefabs);
+            //prefabs.events.onInputDown.add(this.attack, this)
+        }
+    }, {
+        key: 'attack',
+        value: function attack() {
+            console.log(this);
         }
     }, {
         key: 'update',

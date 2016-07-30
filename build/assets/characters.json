@@ -1,7 +1,8 @@
 {
     "assets": {
         "sara": {"source": "assets/spritesheets/characters/sara_attack.png", "width": 128, "height": 64},
-        "ultimate_defender": {"source": "assets/spritesheets/characters/ultimate_defender_attack.png", "width": 128, "height": 64}
+        "ultimate_defender": {"source": "assets/spritesheets/characters/ultimate_defender_attack.png", "width": 128, "height": 64},
+        "thief": {"source": "assets/spritesheets/characters/thief_attack.png", "width": 64, "height": 64}
     },
     "groups": [
         "player_units",
@@ -10,29 +11,43 @@
     "prefabs" : {
         "ultimate_defender": {
             "type": "enemy_unit",
-            "position": {"x": 150, "y": 150},
+            "position": {"x": 150, "y": 0},
             "properties": {
                 "texture": "ultimate_defender_attack",
                 "group": "enemy_units",
                 "frame": 0,
                 "stats": {
                     "attack": 15,
-                    "defense": 5,
+                    "defense": 10,
                     "health": 100
                 }
             }
         },
         "sara": {
             "type": "player_unit",
-            "position": {"x": 650, "y": 150},
+            "position": {"x": 650, "y": 0},
             "properties": {
                 "texture": "sara_attack",
                 "group": "player_units",
                 "frame": 0,
                 "stats": {
-                    "attack": 15,
-                    "defense": 5,
+                    "attack": 20,
+                    "defense": 10,
                     "health": 100
+                }
+            }
+        },
+        "thief": {
+            "type": "player_unit",
+            "position": {"x": 650, "y": 0},
+            "properties": {
+                "texture": "thief_attack",
+                "group": "player_units",
+                "frame": 0,
+                "stats": {
+                    "attack": 10,
+                    "defense": 5,
+                    "health": 80
                 }
             }
         }
