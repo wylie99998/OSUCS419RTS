@@ -190,7 +190,7 @@
     "start": "10016",
     "elements": {
         "10016": {
-            "npc": ""What do the people of the Iron Islands call themselves?\n",
+            "npc": "What do the people of the Iron Islands call themselves?\n",
             "character": [
                 {"0": "1. Iron born\n"},
                 {"1": "2. Rivermen\n"},
