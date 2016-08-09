@@ -1,6 +1,6 @@
-export default class NPC01 extends Phaser.Sprite {
+export default class NPC02 extends Phaser.Sprite {
     constructor(game) {
-        super(game, 1400, 500, 'npc01', 0);
+        super(game, 1450, 850, 'npc02', 0);
 
         // enable interaction with player
         this.scale.setTo(1.1);
@@ -15,7 +15,7 @@ export default class NPC01 extends Phaser.Sprite {
         this.showDialogue(this.game.dialogue, this.id);
     }
     showDialogue(dialogue, id) {
-        let x = 20, y = 350;
+        let x = 50, y = 700;
 
         // show question
         let question = dialogue['elements'][id].npc;

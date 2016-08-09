@@ -1,16 +1,16 @@
 import Player from 'prefabs/Player';
-import NPC01 from 'prefabs/NPC01';
+import NPC02 from 'prefabs/NPC02';
 
-export default class NorthKingdom extends Phaser.State {
+export default class StormlandsKingdom extends Phaser.State {
 	preload() {
-		this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 1);
+		this.load.spritesheet('npc02', "assets/spritesheets/npc02.png", 64, 64, 1);
 		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
 		this.load.text('characters', 'assets/characters.json');
 	}
 	create() {
         // add map
-		this.map = this.add.tilemap('north_kingdom');
-		this.map.addTilesetImage('Tiny16', 'tiles');
+		this.map = this.add.tilemap('stormlands_kingdom');
+		this.map.addTilesetImage('snowtiles', 'snowytiles');
 
 		// add layers from map
 		this.backgroundLayer = this.map.createLayer('backgroundLayer');
@@ -24,20 +24,15 @@ export default class NorthKingdom extends Phaser.State {
         this.blockedLayer.resizeWorld();
         this.blockedLayer.smoothed = false;
 
-        this.borderLayer = this.map.createLayer('borderLayer');
-        this.borderLayer.scale.setTo(3.5, 3.5);
-        this.borderLayer.resizeWorld();
-        this.borderLayer.smoothed = false;
-
         // add player
 		this.player = new Player(this.game);
 		this.add.existing(this.player);
-		this.player.position.x = 1400;
+		this.player.position.x = 1230;
 		this.player.position.y = 1400;
 
 		// add npc
-		this.npc01 = new NPC01(this.game);
-		this.add.existing(this.npc01);
+		this.npc02 = new NPC02(this.game);
+		this.add.existing(this.npc02);
 	}
     update() {
         this.game.physics.arcade.collide(this.player, this.blockedLayer);

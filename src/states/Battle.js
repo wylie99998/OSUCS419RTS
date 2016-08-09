@@ -30,6 +30,13 @@ export default class Battle extends Phaser.State {
         this.map = this.add.tilemap('battle');
         this.map.addTilesetImage('Tiny16', 'tiles');
         this.backgroundLayer = this.map.createLayer('backgroundLayer');
+        this.borderLayer = this.map.createLayer('borderLayer');
+        this.backgroundLayer.scale.setTo(3.5, 3.5);
+        this.borderLayer.scale.setTo(3.5, 3.5);
+        this.backgroundLayer.resizeWorld();
+        this.borderLayer.resizeWorld();
+		this.backgroundLayer.smoothed = false;
+        this.borderLayer.smoothed = false;
 
         // create characters in party
         var assets = this.game.party;

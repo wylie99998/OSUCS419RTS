@@ -2,6 +2,7 @@ import Boot from 'states/Boot';
 import Preload from 'states/Preload';
 import Battle from 'states/Battle';
 import NorthKingdom from 'levels/NorthKingdom';
+import StormlandsKingdom from 'levels/StormlandsKingdom';
 
 class Game extends Phaser.Game {
 
@@ -11,6 +12,7 @@ class Game extends Phaser.Game {
 		this.state.add('Preload', Preload, false);
 		this.state.add('Battle', Battle, false);
 		this.state.add('NorthKingdom', NorthKingdom, false);
+		this.state.add('StormlandsKingdom', StormlandsKingdom, false);
 		this.state.start('Boot');
 	}
 }
