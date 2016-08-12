@@ -43,7 +43,12 @@ export default class NPC01 extends Phaser.Sprite {
     checkAnswer(selected) {
         let selectedAnswer = selected.text;
         let correctAnswer = this.game.dialogue['elements'][this.id].correct;
+         if(Cookies.get('NPC01') === undefined){
+            Cookies.set('NPC01', '0', { expires: 7 });
+        }
         if (selectedAnswer == correctAnswer) {
+            var counterCookie = parseInt(Cookies.get('NPC01')) + 1;
+            Cookies.set('NPC01', counterCookie.toString(), { expires: 7 });
             this.assignParty();
         } else {
             console.log("You got it wrong...");
