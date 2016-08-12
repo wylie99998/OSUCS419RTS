@@ -368,7 +368,12 @@ var NPC01 = function (_Phaser$Sprite) {
         value: function checkAnswer(selected) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
-            if (selectedAnswer == correctAnswer) {
+            if(Cookies.get('NPC01') === undefined){
+            Cookies.set('NPC01', '0', { expires: 7 });
+        }
+        if (selectedAnswer == correctAnswer) {
+            var counterCookie = parseInt(Cookies.get('NPC01')) + 1;
+            Cookies.set('NPC01', counterCookie.toString(), { expires: 7 });
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
