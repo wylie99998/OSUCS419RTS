@@ -2,7 +2,7 @@
     "assets": {
         "ultimate_defender": {"source": "assets/spritesheets/characters/ultimate_defender_attack.png", "width": 128, "height": 64},
         "orc_spear": {"source": "assets/spritesheets/characters/orc_spear_attack.png", "width": 64, "height": 64},
-        "skeleton_spear": {"source": "assets/spritesheets/characters/skeleton_speark_attack.png", "width": 64, "height": 64},
+        "skeleton_bow": {"source": "assets/spritesheets/characters/skeleton_bow_attack.png", "width": 64, "height": 64},
         "sara": {"source": "assets/spritesheets/characters/sara_attack.png", "width": 128, "height": 64},
         "thief": {"source": "assets/spritesheets/characters/thief_attack.png", "width": 64, "height": 64}
     },
@@ -39,11 +39,11 @@
                 }
             }
         },
-        "skeleton_spear": {
+        "skeleton_bow": {
             "type": "enemy_unit",
-            "position": {"x": 280, "y": 0},
+            "position": {"x": 280, "y": 100},
             "properties": {
-                "texture": "skeleton_spear",
+                "texture": "skeleton_bow_attack",
                 "group": "enemy_units",
                 "frame": 0,
                 "stats": {
@@ -75,7 +75,7 @@
                 "group": "player_units",
                 "frame": 0,
                 "stats": {
-                    "attack": 10,
+                    "attack": 15,
                     "defense": 5,
                     "health": 80
                 }

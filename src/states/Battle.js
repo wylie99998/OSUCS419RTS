@@ -23,7 +23,12 @@ export default class Battle extends Phaser.State {
             assets_data.assets['orc_spear'].source,
             assets_data.assets['orc_spear'].width,
             assets_data.assets['orc_spear'].height, 12
-
+        );
+        this.load.spritesheet (
+            'skeleton_bow',
+            assets_data.assets['skeleton_bow'].source,
+            assets_data.assets['skeleton_bow'].width,
+            assets_data.assets['skeleton_bow'].height, 12
         );
     }
     create() {
@@ -62,7 +67,7 @@ export default class Battle extends Phaser.State {
 
         this.enemy = [];
         // create opponent's party
-        for (var character in assets) {
+        /*for (var character in assets) {
             this.character = new PlayerUnit (
                 this.game,
                 assets_data.prefabs['orc_spear'].position.x,
@@ -73,13 +78,35 @@ export default class Battle extends Phaser.State {
             );
             this.enemy.push(this.character);
             this.add.existing(this.character);
-        }
-
+        }*/
+        this.character = new PlayerUnit (
+            this.game,
+            assets_data.prefabs['orc_spear'].position.x,
+            assets_data.prefabs['orc_spear'].position.y+=100,
+            'orc_spear',
+            assets_data.prefabs['orc_spear'].properties.stats,
+            assets_data.prefabs['orc_spear'].type
+        );
+        this.enemy.push(this.character);
+        this.add.existing(this.character);
         delete(this.character);
+
+        this.character = new PlayerUnit (
+            this.game,
+            assets_data.prefabs['skeleton_bow'].position.x,
+            assets_data.prefabs['skeleton_bow'].position.y+=100,
+            'skeleton_bow',
+            assets_data.prefabs['skeleton_bow'].properties.stats,
+            assets_data.prefabs['skeleton_bow'].type
+        );
+        this.enemy.push(this.character);
+        this.add.existing(this.character);
+        delete(this.character);
+
         this.whoseTurn();
     }
     whoseTurn() {
-        if (this.isPartysTurn){
+        if (this.isPartysTurn) {
             this.isPartysTurn = false;
             this.current_unit = this.party.shift();
         } else {
@@ -87,11 +114,14 @@ export default class Battle extends Phaser.State {
             this.current_unit = this.enemy.shift();
         }
 
+        if (this.enemy.length == 0) {
+            this.game.state.start("ReachKingdom");
+        }
         if (this.current_unit.alive) {
-
             if (this.isPartysTurn){
                 this.enemy.push(this.current_unit);
-                this.act(this.current_unit);
+                console.log(this.enemy.length)
+                this.act();
             } else {
                 this.party.push(this.current_unit);
                 this.act(this.current_unit);
@@ -100,66 +130,66 @@ export default class Battle extends Phaser.State {
             this.whoseTurn();
         }
     }
-    act(current_unit) {
-        var target_index, target, damage;
+    act() {
+        var target_index;
         var party_size = this.game.party.length;
-        if (current_unit.type == "enemy_unit") {
+        if (this.current_unit.type == "enemy_unit") {
             // randomly choose target
-            target_index = this.rnd.between(0, this.game.party.length - 1);
-            target = this.party[target_index];
-            this.attack(current_unit, target);
+            target_index = this.rnd.between(0, this.party.length - 1);
+            this.target = this.party[target_index];
+            this.attack();
         } else {
-            target_index = this.rnd.between(0, this.game.party.length - 1);
-            target = this.enemy[target_index];
-            this.attack(current_unit, target);
+            target_index = this.rnd.between(0, this.enemy.length - 1);
+            this.target = this.enemy[target_index];
+            this.attack();
         }
     }
-    attack(current_unit, target) {
+    attack() {
         var damage, attack_multiplier, defense_multiplier;
-        this.distanceMovedX = Math.abs(current_unit.position.x - target.position.x);
-        this.distanceMovedY = Math.abs(current_unit.position.y - target.position.y);
-        this.origY = current_unit.position.y;
+        this.distanceMovedX = Math.abs(this.current_unit.position.x - this.target.position.x);
+        this.distanceMovedY = Math.abs(this.current_unit.position.y - this.target.position.y);
+        this.origY = this.current_unit.position.y;
         attack_multiplier = this.game.rnd.realInRange(0.8, 1.2);
         defense_multiplier = this.game.rnd.realInRange(0.8, 1.2);
-        damage = Math.round((attack_multiplier * current_unit.attack) - (defense_multiplier * target.defense));
+        damage = Math.round((attack_multiplier * this.current_unit.attack) - (defense_multiplier * this.target.defense));
 
-        if (current_unit.type == "enemy_unit"){
-            current_unit.position.x = target.position.x - 50;
-            current_unit.position.y = target.position.y;
+        if (this.current_unit.type == "enemy_unit"){
+            this.current_unit.position.x = this.target.position.x - 50;
+            this.current_unit.position.y = this.target.position.y;
         } else {
-            current_unit.position.x = target.position.x + 50;
-            current_unit.position.y = target.position.y;
+            this.current_unit.position.x = this.target.position.x + 50;
+            this.current_unit.position.y = this.target.position.y;
         }
-        current_unit.animations.play('attack');
+        this.current_unit.animations.play('attack');
 
-        target.health -= damage;
+        this.target.health -= damage;
 
-        if (target.health <= 0) {
-            current_unit.alive = false;
-            target.health = 0;
-            this.kill(target)
+        if (this.target.health <= 0) {
+            this.current_unit.alive = false;
+            this.target.health = 0;
+            this.kill()
         }
-        current_unit.animations.currentAnim.onComplete.add(this.move, this);
+        this.current_unit.animations.currentAnim.onComplete.add(this.move, this);
     }
 
-    move(current_unit) {
-        if (current_unit.type == "enemy_unit") {
-            current_unit.position.x = current_unit.position.x - this.distanceMovedX + 50;
-            current_unit.position.y = this.origY;
+    move() {
+        if (this.current_unit.type == "enemy_unit") {
+            this.current_unit.position.x = this.current_unit.position.x - this.distanceMovedX + 50;
+            this.current_unit.position.y = this.origY;
         } else {
-            current_unit.position.x = current_unit.position.x + this.distanceMovedX - 50;
-            current_unit.position.y = this.origY;
+            this.current_unit.position.x = this.current_unit.position.x + this.distanceMovedX - 50;
+            this.current_unit.position.y = this.origY;
         }
         this.whoseTurn();
     }
-    kill(target) {
-        if (target.type == "enemy_unit") {
-            this.enemy.pop(target);
-            this.game.add.tween(target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
+    kill() {
+        if (this.target.type == "enemy_unit") {
+            this.enemy.pop(this.target);
+            this.game.add.tween(this.target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
             //console.log(this.enemy)
         } else {
-            this.party.pop(target);
-            this.game.add.tween(target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
+            this.party.pop(this.target);
+            this.game.add.tween(this.target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
             //console.log(this.party)
         }
     }
