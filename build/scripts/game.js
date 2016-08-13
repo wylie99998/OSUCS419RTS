@@ -1181,7 +1181,7 @@ var PlayerUnit = function (_Phaser$Sprite) {
         _this.inputEnabled = true;
 
         _this.animations.add("attack", [0, 1, 2, 3, 4, 5, 0], 8, false);
-        //this.animations.play("attack");
+        _this.animations.play("attack");
         _this.attack = stats.attack;
         _this.defense = stats.defense;
         _this.health = stats.health;
@@ -1254,7 +1254,7 @@ var Battle = function (_Phaser$State) {
     }, {
         key: 'preload',
         value: function preload() {
-            this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
+            //this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
 
@@ -1285,76 +1285,72 @@ var Battle = function (_Phaser$State) {
             // create characters in party
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
-            var party = [];
+            this.party = [];
             for (var character in assets) {
                 this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs[assets[character].name].position.x, assets_data.prefabs[assets[character].name].position.y += 100, assets[character].name, assets_data.prefabs[assets[character].name].properties.stats, assets_data.prefabs[assets[character].name].type);
-                party.push(this.character);
+                this.party.push(this.character);
                 this.add.existing(this.character);
             }
             delete this.character;
 
-            var enemy = [];
+            this.enemy = [];
             // create opponent's party
             for (var character in assets) {
-                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats,
-                //assets_data.prefabs[assets[character].name].type
-                assets_data.prefabs['orc_spear'].type);
-                enemy.push(this.character);
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats, assets_data.prefabs['orc_spear'].type);
+                this.enemy.push(this.character);
                 this.add.existing(this.character);
             }
 
             delete this.character;
-            this.whoseTurn(party, enemy);
-            //this.whoseTurn = this.sara.name;
+            this.whoseTurn();
         }
     }, {
         key: 'whoseTurn',
-        value: function whoseTurn(party, enemy) {
+        value: function whoseTurn() {
             if (this.isPartysTurn) {
                 this.isPartysTurn = false;
-                this.current_unit = party.shift();
+                this.current_unit = this.party.shift();
             } else {
                 this.isPartysTurn = true;
-                this.current_unit = enemy.shift();
+                this.current_unit = this.enemy.shift();
             }
 
-            //this.attack(this.current_unit);
             if (this.current_unit.alive) {
 
                 if (this.isPartysTurn) {
-                    enemy.push(this.current_unit);
-                    this.act(this.current_unit, enemy, party);
+                    this.enemy.push(this.current_unit);
+                    this.act(this.current_unit);
                 } else {
-                    party.push(this.current_unit);
-                    this.act(this.current_unit, enemy, party);
+                    this.party.push(this.current_unit);
+                    this.act(this.current_unit);
                 }
             } else {
-                this.whoseTurn(party, enemy);
+                this.whoseTurn();
             }
         }
     }, {
         key: 'act',
-        value: function act(current_unit, enemy, party) {
+        value: function act(current_unit) {
             var target_index, target, damage;
             var party_size = this.game.party.length;
             if (current_unit.type == "enemy_unit") {
                 // randomly choose target
                 target_index = this.rnd.between(0, this.game.party.length - 1);
-                target = party[target_index];
-                this.attack(current_unit, target, enemy, party);
+                target = this.party[target_index];
+                this.attack(current_unit, target);
             } else {
                 target_index = this.rnd.between(0, this.game.party.length - 1);
-                target = enemy[target_index];
-                this.attack(current_unit, target, enemy, party);
+                target = this.enemy[target_index];
+                this.attack(current_unit, target);
             }
         }
     }, {
         key: 'attack',
-        value: function attack(current_unit, target, enemy, party) {
+        value: function attack(current_unit, target) {
             var damage, attack_multiplier, defense_multiplier;
-            var distanceMovedX = Math.abs(current_unit.position.x - target.position.x);
-            var distanceMovedY = Math.abs(current_unit.position.y - target.position.y);
-            var origY = current_unit.position.y;
+            this.distanceMovedX = Math.abs(current_unit.position.x - target.position.x);
+            this.distanceMovedY = Math.abs(current_unit.position.y - target.position.y);
+            this.origY = current_unit.position.y;
             attack_multiplier = this.game.rnd.realInRange(0.8, 1.2);
             defense_multiplier = this.game.rnd.realInRange(0.8, 1.2);
             damage = Math.round(attack_multiplier * current_unit.attack - defense_multiplier * target.defense);
@@ -1366,14 +1362,7 @@ var Battle = function (_Phaser$State) {
                 current_unit.position.x = target.position.x + 50;
                 current_unit.position.y = target.position.y;
             }
-
-            if (current_unit.type == "enemy_unit") {
-                current_unit.position.x = current_unit.position.x - distanceMovedX + 50;
-                current_unit.position.y = origY;
-            } else {
-                current_unit.position.x = current_unit.position.x + distanceMovedX - 50;
-                current_unit.position.y = origY;
-            }
+            current_unit.animations.play('attack');
 
             target.health -= damage;
 
@@ -1382,12 +1371,32 @@ var Battle = function (_Phaser$State) {
                 target.health = 0;
                 this.kill(target);
             }
-            this.whoseTurn(enemy, party);
+            current_unit.animations.currentAnim.onComplete.add(this.move, this);
+        }
+    }, {
+        key: 'move',
+        value: function move(current_unit) {
+            if (current_unit.type == "enemy_unit") {
+                current_unit.position.x = current_unit.position.x - this.distanceMovedX + 50;
+                current_unit.position.y = this.origY;
+            } else {
+                current_unit.position.x = current_unit.position.x + this.distanceMovedX - 50;
+                current_unit.position.y = this.origY;
+            }
+            this.whoseTurn();
         }
     }, {
         key: 'kill',
         value: function kill(target) {
-            prefabs.pop(target);
+            if (target.type == "enemy_unit") {
+                this.enemy.pop(target);
+                this.game.add.tween(target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+                //console.log(this.enemy)
+            } else {
+                this.party.pop(target);
+                this.game.add.tween(target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+                //console.log(this.party)
+            }
         }
     }]);
 
