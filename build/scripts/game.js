@@ -25,6 +25,10 @@ var _PrincipalityOfDorne = require('levels/PrincipalityOfDorne');
 
 var _PrincipalityOfDorne2 = _interopRequireDefault(_PrincipalityOfDorne);
 
+var _ReachKingdom = require('levels/ReachKingdom');
+
+var _ReachKingdom2 = _interopRequireDefault(_ReachKingdom);
+
 function _interopRequireDefault(obj) {
 	return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -61,6 +65,7 @@ var Game = function (_Phaser$Game) {
 		_this.state.add('NorthKingdom', _NorthKingdom2.default, false);
 		_this.state.add('StormlandsKingdom', _StormlandsKingdom2.default, false);
 		_this.state.add('PrincipalityOfDorne', _PrincipalityOfDorne2.default, false);
+		_this.state.add('ReachKingdom', _ReachKingdom2.default, false);
 		_this.state.start('Boot');
 		return _this;
 	}
@@ -70,7 +75,7 @@ var Game = function (_Phaser$Game) {
 
 new Game();
 
-},{"levels/NorthKingdom":2,"levels/PrincipalityOfDorne":3,"levels/StormlandsKingdom":4,"states/Battle":10,"states/Boot":11,"states/Preload":12}],2:[function(require,module,exports){
+},{"levels/NorthKingdom":2,"levels/PrincipalityOfDorne":3,"levels/ReachKingdom":4,"levels/StormlandsKingdom":5,"states/Battle":12,"states/Boot":13,"states/Preload":14}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -183,7 +188,7 @@ var NorthKingdom = function (_Phaser$State) {
 
 exports.default = NorthKingdom;
 
-},{"prefabs/NPC01":5,"prefabs/Player":8}],3:[function(require,module,exports){
+},{"prefabs/NPC01":6,"prefabs/Player":10}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -292,7 +297,111 @@ var PrincipalityOfDorne = function (_Phaser$State) {
 
 exports.default = PrincipalityOfDorne;
 
-},{"prefabs/NPC03":7,"prefabs/Player":8}],4:[function(require,module,exports){
+},{"prefabs/NPC03":8,"prefabs/Player":10}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+						value: true
+});
+
+var _createClass = function () {
+						function defineProperties(target, props) {
+												for (var i = 0; i < props.length; i++) {
+																		var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+												}
+						}return function (Constructor, protoProps, staticProps) {
+												if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+						};
+}();
+
+var _Player = require('prefabs/Player');
+
+var _Player2 = _interopRequireDefault(_Player);
+
+var _NPC = require('prefabs/NPC04');
+
+var _NPC2 = _interopRequireDefault(_NPC);
+
+function _interopRequireDefault(obj) {
+						return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+						if (!(instance instanceof Constructor)) {
+												throw new TypeError("Cannot call a class as a function");
+						}
+}
+
+function _possibleConstructorReturn(self, call) {
+						if (!self) {
+												throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+						}return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+						if (typeof superClass !== "function" && superClass !== null) {
+												throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+						}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var ReachKingdom = function (_Phaser$State) {
+						_inherits(ReachKingdom, _Phaser$State);
+
+						function ReachKingdom() {
+												_classCallCheck(this, ReachKingdom);
+
+												return _possibleConstructorReturn(this, Object.getPrototypeOf(ReachKingdom).apply(this, arguments));
+						}
+
+						_createClass(ReachKingdom, [{
+												key: 'preload',
+												value: function preload() {
+																		this.load.spritesheet('npc04', "assets/spritesheets/npc04.png", 64, 64, 1);
+																		this.load.text('dialogue', 'assets/dialogue/NPC04.json');
+																		this.load.text('characters', 'assets/characters.json');
+												}
+						}, {
+												key: 'create',
+												value: function create() {
+																		// add map
+																		this.map = this.add.tilemap('reach_kingdom');
+																		this.map.addTilesetImage('town_tiles', 'town_tiles');
+
+																		// add layers from map
+																		this.backgroundLayer = this.map.createLayer('backgroundLayer');
+																		this.backgroundLayer.scale.setTo(3.5, 3.5);
+																		this.backgroundLayer.resizeWorld();
+																		this.backgroundLayer.smoothed = false;
+
+																		this.blockedLayer = this.map.createLayer('blockedLayer');
+																		this.map.setCollisionBetween(1, 256, true, 'blockedLayer');
+																		this.blockedLayer.setScale(3.5, 3.5);
+																		this.blockedLayer.resizeWorld();
+																		this.blockedLayer.smoothed = false;
+
+																		// add player
+																		this.player = new _Player2.default(this.game);
+																		this.add.existing(this.player);
+																		this.player.position.x = 1230;
+																		this.player.position.y = 1400;
+
+																		// add npc
+																		this.npc04 = new _NPC2.default(this.game);
+																		this.add.existing(this.npc04);
+												}
+						}, {
+												key: 'update',
+												value: function update() {
+																		this.game.physics.arcade.collide(this.player, this.blockedLayer);
+												}
+						}]);
+
+						return ReachKingdom;
+}(Phaser.State);
+
+exports.default = ReachKingdom;
+
+},{"prefabs/NPC04":9,"prefabs/Player":10}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -400,7 +509,7 @@ var StormlandsKingdom = function (_Phaser$State) {
 
 exports.default = StormlandsKingdom;
 
-},{"prefabs/NPC02":6,"prefabs/Player":8}],5:[function(require,module,exports){
+},{"prefabs/NPC02":7,"prefabs/Player":10}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -536,7 +645,7 @@ var NPC01 = function (_Phaser$Sprite) {
 
 exports.default = NPC01;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -672,7 +781,7 @@ var NPC02 = function (_Phaser$Sprite) {
 
 exports.default = NPC02;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -803,7 +912,138 @@ var NPC02 = function (_Phaser$Sprite) {
 
 exports.default = NPC02;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+}();
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
+
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var NPC04 = function (_Phaser$Sprite) {
+    _inherits(NPC04, _Phaser$Sprite);
+
+    function NPC04(game) {
+        _classCallCheck(this, NPC04);
+
+        // enable interaction with player
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NPC04).call(this, game, 750, 1000, 'npc04', 0));
+
+        _this.scale.setTo(1.1);
+        _this.inputEnabled = true;
+        _this.events.onInputDown.add(_this.startDialogue, _this);
+        return _this;
+    }
+
+    _createClass(NPC04, [{
+        key: 'startDialogue',
+        value: function startDialogue() {
+            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.totalCorrect = 0;
+            this.party = [];
+            this.id = this.game.dialogue.start;
+            this.showDialogue(this.game.dialogue, this.id);
+        }
+    }, {
+        key: 'showDialogue',
+        value: function showDialogue(dialogue, id) {
+            var x = -400,
+                y = 950;
+
+            // show question
+            var question = dialogue['elements'][id].npc;
+            this.style = {
+                font: "22px Arial",
+                fill: "white",
+                align: "center",
+                backgroundColor: "000"
+            };
+            this.question = this.game.add.text(this.game.world.centerX + x, y, question, this.style);
+
+            // show answers and add input to click
+            var answers = dialogue['elements'][id].character;
+            this.answers_set = [];
+            for (var i in answers) {
+                this.answers_set[i] = this.game.add.text(this.game.world.centerX + x, y += 60, answers[i][i], this.style);
+                this.answers_set[i].inputEnabled = true;
+                this.answers_set[i].events.onInputDown.add(this.checkAnswer, this);
+            }
+        }
+    }, {
+        key: 'checkAnswer',
+        value: function checkAnswer(selected) {
+            var selectedAnswer = selected.text;
+            var correctAnswer = this.game.dialogue['elements'][this.id].correct;
+            if (selectedAnswer == correctAnswer) {
+                this.assignParty();
+            } else {
+                console.log("You got it wrong...");
+            }
+            this.updateDialogue();
+        }
+    }, {
+        key: 'updateDialogue',
+        value: function updateDialogue() {
+            // update id to point to next question
+            this.id = this.game.dialogue['elements'][this.id].followup;
+            if (this.id == "") {
+                this.startBattle(this.party);
+            }
+
+            // remove question and answers from game
+            this.question.destroy();
+            this.answers_set.forEach(function (answer) {
+                answer.destroy();
+            });
+            this.showDialogue(this.game.dialogue, this.id);
+        }
+    }, {
+        key: 'assignParty',
+        value: function assignParty() {
+            this.party.push({ name: 'thief' });
+        }
+    }, {
+        key: 'startBattle',
+        value: function startBattle(party) {
+            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.game.state.start('Battle', true, false, party);
+        }
+    }]);
+
+    return NPC04;
+}(Phaser.Sprite);
+
+exports.default = NPC04;
+
+},{}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -903,7 +1143,7 @@ var Player = function (_Phaser$Sprite) {
 
 exports.default = Player;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -931,10 +1171,10 @@ function _inherits(subClass, superClass) {
 var PlayerUnit = function (_Phaser$Sprite) {
     _inherits(PlayerUnit, _Phaser$Sprite);
 
-    function PlayerUnit(game, x, y, asset, stats) {
+    function PlayerUnit(game, x, y, asset, stats, type) {
         _classCallCheck(this, PlayerUnit);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerUnit).call(this, game, x, y, asset, stats, 0));
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PlayerUnit).call(this, game, x, y, asset, stats, type, 0));
 
         _this.scale.setTo(1.2);
         _this.smoothed = false;
@@ -945,6 +1185,7 @@ var PlayerUnit = function (_Phaser$Sprite) {
         _this.attack = stats.attack;
         _this.defense = stats.defense;
         _this.health = stats.health;
+        _this.type = type;
         return _this;
     }
 
@@ -953,7 +1194,7 @@ var PlayerUnit = function (_Phaser$Sprite) {
 
 exports.default = PlayerUnit;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1046,7 +1287,7 @@ var Battle = function (_Phaser$State) {
             var assets_data = JSON.parse(this.cache.getText('characters'));
             var prefabs = [];
             for (var character in assets) {
-                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs[assets[character].name].position.x, assets_data.prefabs[assets[character].name].position.y += 100, assets[character].name, assets_data.prefabs[assets[character].name].properties.stats);
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs[assets[character].name].position.x, assets_data.prefabs[assets[character].name].position.y += 100, assets[character].name, assets_data.prefabs[assets[character].name].properties.stats, assets_data.prefabs[assets[character].name].type);
                 prefabs.push(this.character);
                 this.add.existing(this.character);
             }
@@ -1054,37 +1295,73 @@ var Battle = function (_Phaser$State) {
 
             // create opponent's party
             for (var character in assets) {
-                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats);
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats,
+                //assets_data.prefabs[assets[character].name].type
+                assets_data.prefabs['orc_spear'].type);
                 prefabs.push(this.character);
                 this.add.existing(this.character);
             }
+
             delete this.character;
-
             this.whoseTurn(prefabs);
-            //this.whoseTurn = this.sara.name;
-
-            //this.ultimate_defender.events.onInputDown.add(this.effect, this);
         }
     }, {
         key: 'whoseTurn',
         value: function whoseTurn(prefabs) {
             this.current_unit = prefabs.shift();
             //this.attack(this.current_unit);
-            console.log(prefabs);
-            //prefabs.events.onInputDown.add(this.attack, this)
+            if (this.current_unit.alive) {
+                prefabs.push(this.current_unit);
+                this.act(this.current_unit, prefabs);
+            } else {
+                this.whoseTurn(prefabs);
+            }
+        }
+    }, {
+        key: 'act',
+        value: function act(current_unit, prefabs) {
+            //console.log(prefabs)
+            var target_index, target, damage;
+            var party_size = this.game.party.length;
+
+            if (current_unit.type == "enemy_unit") {
+                // randomly choose target
+                target_index = this.rnd.between(0, party_size - 1);
+                target = prefabs[target_index];
+                this.attack(current_unit, target);
+            } else {
+                target_index = this.rnd.between(party_size, prefabs.length - 1);
+                target = prefabs[target_index];
+                this.attack(current_unit, target, prefabs);
+            }
         }
     }, {
         key: 'attack',
-        value: function attack() {
-            console.log(this);
+        value: function attack(current_unit, target, prefabs) {
+            var damage, attack_multiplier, defense_multiplier, posX, posY;
+            attack_multiplier = this.game.rnd.realInRange(0.8, 1.2);
+            defense_multiplier = this.game.rnd.realInRange(0.8, 1.2);
+            damage = Math.round(attack_multiplier * current_unit.attack - defense_multiplier * target.defense);
+            posX = current_unit.position.x;
+            posY = current_unit.position.y;
+
+            setTimeout(function () {
+                current_unit.position.x = posX;
+                current_unit.position.y = posY;
+            }, 2000);
+
+            target.health -= damage;
+
+            if (target.health <= 0) {
+                target.health = 0;
+                this.kill(target);
+            }
+            this.whoseTurn(prefabs);
         }
     }, {
-        key: 'update',
-        value: function update() {}
-    }, {
-        key: 'effect',
-        value: function effect() {
-            console.log('hit');
+        key: 'kill',
+        value: function kill(target) {
+            prefabs.pop(target);
         }
     }]);
 
@@ -1093,7 +1370,7 @@ var Battle = function (_Phaser$State) {
 
 exports.default = Battle;
 
-},{"prefabs/PlayerUnit":9}],11:[function(require,module,exports){
+},{"prefabs/PlayerUnit":11}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1156,7 +1433,7 @@ var Boot = function (_Phaser$State) {
 
 exports.default = Boot;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1206,10 +1483,12 @@ var Preload = function (_Phaser$State) {
             this.load.tilemap('north_kingdom', 'assets/tilemaps/north_kingdom.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.tilemap('stormlands_kingdom', 'assets/tilemaps/stormlands_kingdom.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.tilemap('principality_of_dorne', 'assets/tilemaps/principality_of_dorne.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.tilemap('reach_kingdom', 'assets/tilemaps/reach_kingdom.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.tilemap('battle', 'assets/tilemaps/battle.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.image('tiles', 'assets/spritesheets/Tiny16.png');
             this.load.image('snowytiles', 'assets/spritesheets/snowtiles.png');
             this.load.image('sheet', 'assets/spritesheets/sheet.png');
+            this.load.image('town_tiles', 'assets/spritesheets/town_tiles.png');
             this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 64, 64, 178);
             this.game.load.audio('soliloquy', 'assets/audio/Soliloquy_1.mp3');
         }
@@ -1232,6 +1511,9 @@ var Preload = function (_Phaser$State) {
 
             this.key3 = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
             this.key3.onDown.add(this.startGame, this);
+
+            this.key4 = this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+            this.key4.onDown.add(this.startGame, this);
         }
     }, {
         key: 'startGame',
@@ -1243,6 +1525,8 @@ var Preload = function (_Phaser$State) {
                 this.state.start('StormlandsKingdom');
             } else if (this.key3._justDown) {
                 this.state.start('PrincipalityOfDorne');
+            } else if (this.key4._justDown) {
+                this.state.start('ReachKingdom');
             }
         }
     }]);

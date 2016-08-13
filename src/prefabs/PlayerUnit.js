@@ -1,6 +1,6 @@
 export default class PlayerUnit extends Phaser.Sprite {
-    constructor(game, x, y, asset, stats) {
-        super(game, x, y, asset, stats, 0);
+    constructor(game, x, y, asset, stats, type) {
+        super(game, x, y, asset, stats, type, 0);
         this.scale.setTo(1.2);
         this.smoothed = false;
         this.inputEnabled = true;
@@ -10,5 +10,6 @@ export default class PlayerUnit extends Phaser.Sprite {
         this.attack = stats.attack;
         this.defense = stats.defense;
         this.health = stats.health;
+        this.type = type;
     }
 }

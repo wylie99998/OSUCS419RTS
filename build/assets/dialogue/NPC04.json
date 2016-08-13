@@ -1,0 +1,62 @@
+{
+    "name": "NPC04",
+    "key": "npc04",
+    "start": "10011",
+    "elements": {
+        "10011": {
+            "npc": "Why is Margaery impriosioned by the Faith?\n",
+            "character": [
+                {"0": "1. Adultery\n"},
+                {"1": "2. Perjury\n"},
+                {"2": "3. Treason\n"},
+                {"3": "4. Adultery and Treason\n"}
+            ],
+            "correct": "4. Adultery and Treason\n",
+            "followup": "10012"
+        },
+        "10012": {
+            "npc": "Who is the heir to Highgarden?\n",
+            "character": [
+                {"0": "1. Loras Tyrell\n"},
+                {"1": "2. Mace Tyrell\n"},
+                {"2": "3. Willas Tyrell\n"},
+                {"3": "4. Margaery Tyrell\n"}
+            ],
+            "correct": "3. Willas Tyrell\n",
+            "followup": "10013"
+        },
+        "10013": {
+            "npc": "How did Willas Tyrell become crippled?\n",
+            "character": [
+                {"0": "1. He was born that way\n"},
+                {"1": "2. He was injured in battle\n"},
+                {"2": "3. He was injured in a tournament\n"},
+                {"3": "4. He was in an accident\n"}
+            ],
+            "correct": "3. He was injured in a tournament\n",
+            "followup": "10014"
+        },
+        "10014": {
+            "npc": "Why is Olena Martell known as the Queen of Thornes?\n",
+            "character": [
+                {"0": "1. She is from Highgarden, whose sigil is a rose\n"},
+                {"1": "2. She is cunning and has a sharp tongue\n"},
+                {"2": "3. She loves roses\n"},
+                {"3": "4. It is a common knick name for queens of Highgarden\n"}
+            ],
+            "correct": "2. She is cunning and has a sharp tongue\n",
+            "followup": "10015"
+        },
+        "10015": {
+            "npc": "What is the name of Renly's Kingsguard?\n",
+            "character": [
+                {"0": "1. Kingsguard\n"},
+                {"1": "2. Rainbow Guard\n"},
+                {"2": "3. White Cloaks \n"},
+                {"3": "4. Rainbow Knights\n"}
+            ],
+            "correct": "2. Rainbow Guard\n",
+            "followup": ""
+        }
+    }
+}
