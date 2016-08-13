@@ -1,0 +1,62 @@
+{
+    "name": "NPC03",
+    "key": "npc03",
+    "start": "10006",
+    "elements": {
+        "10006": {
+            "npc": "What are the names of the three main Sand Snakes?\n",
+            "character": [
+                {"0": "1. Obara, Tyene, Nymeria\n"},
+                {"1": "2. Obara, Elia, Dorea\n"},
+                {"2": "3. Obella, Sarella, Loreza\n"},
+                {"3": "4. Sarella, Obella, Tyene\n"}
+            ],
+            "correct": "2. Obara, Elia, Dorea\n",
+            "followup": "10007"
+        },
+        "10007": {
+            "npc": "Where did the Sand Snakes get their name?\n",
+            "character": [
+                {"0": "1. Because their last name is sand\n"},
+                {"1": "2. From Oberyn's nickname and because they're bastards\n"},
+                {"2": "3. They came up with it\n"},
+                {"3": "4. None of the above\n"}
+            ],
+            "correct": "2. From Oberyn's nickname and because they're bastards\n",
+            "followup": "10008"
+        },
+        "10008": {
+            "npc": "What is the name of the poison Ellaria Martell uses to kill Myrcella?\n",
+            "character": [
+                {"0": "1. The long farewell\n"},
+                {"1": "2. The strangler\n"},
+                {"2": "3. Widow's blood\n"},
+                {"3": "4. Wolfsbane\n"}
+            ],
+            "correct": "1. The long farewell\n",
+            "followup": "10009"
+        },
+        "10009": {
+            "npc": "What are the names of Elia Martell's children?\n",
+            "character": [
+                {"0": "1. Ellaria and Aegon\n"},
+                {"1": "2. Daenerys and Viserys\n"},
+                {"2": "3. Rhaegar and Aerys\n"},
+                {"3": "4. Raenys and Aegon\n"}
+            ],
+            "correct": "2. Daenerys and Viserys\n",
+            "followup": "10010"
+        },
+        "10010": {
+            "npc": "Why is there a red sun on the sigil for house Martell?\n",
+            "character": [
+                {"0": "1. Represents the climate in Dorne\n"},
+                {"1": "2. Represents the hot tempers ad passion of the Dornish \n"},
+                {"2": "3. Represents the sun in Sunspear\n"},
+                {"3": "4. Represents the sigil of Nymeria\n"}
+            ],
+            "correct": "4. Represents the sigil of Nymeria\n",
+            "followup": ""
+        }
+    }
+}

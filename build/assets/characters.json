@@ -1,7 +1,9 @@
 {
     "assets": {
-        "sara": {"source": "assets/spritesheets/characters/sara_attack.png", "width": 128, "height": 64},
         "ultimate_defender": {"source": "assets/spritesheets/characters/ultimate_defender_attack.png", "width": 128, "height": 64},
+        "orc_spear": {"source": "assets/spritesheets/characters/orc_spear_attack.png", "width": 64, "height": 64},
+        "skeleton_spear": {"source": "assets/spritesheets/characters/skeleton_speark_attack.png", "width": 64, "height": 64},
+        "sara": {"source": "assets/spritesheets/characters/sara_attack.png", "width": 128, "height": 64},
         "thief": {"source": "assets/spritesheets/characters/thief_attack.png", "width": 64, "height": 64}
     },
     "groups": [
@@ -20,6 +22,34 @@
                     "attack": 15,
                     "defense": 10,
                     "health": 100
+                }
+            }
+        },
+        "orc_spear": {
+            "type": "enemy_unit",
+            "position": {"x": 280, "y": 0},
+            "properties": {
+                "texture": "orc_spear_attack",
+                "group": "enemy_units",
+                "frame": 0,
+                "stats": {
+                    "attack": 10,
+                    "defense": 4,
+                    "health": 80
+                }
+            }
+        },
+        "skeleton_spear": {
+            "type": "enemy_unit",
+            "position": {"x": 280, "y": 0},
+            "properties": {
+                "texture": "skeleton_spear",
+                "group": "enemy_units",
+                "frame": 0,
+                "stats": {
+                    "attack": 15,
+                    "defense": 3,
+                    "health": 60
                 }
             }
         },

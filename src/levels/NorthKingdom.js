@@ -6,6 +6,8 @@ export default class NorthKingdom extends Phaser.State {
 		this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 1);
 		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
 		this.load.text('characters', 'assets/characters.json');
+		this.game.load.audio('the_kings_crowning', 'assets/audio/the_kings_crowning_v1.mp3');
+
 	}
 	create() {
         // add map
@@ -28,6 +30,9 @@ export default class NorthKingdom extends Phaser.State {
         this.borderLayer.scale.setTo(3.5, 3.5);
         this.borderLayer.resizeWorld();
         this.borderLayer.smoothed = false;
+
+		this.game.music = this.game.add.audio('the_kings_crowning');
+		this.game.music.play();
 
         // add player
 		this.player = new Player(this.game);

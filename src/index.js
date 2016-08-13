@@ -3,6 +3,7 @@ import Preload from 'states/Preload';
 import Battle from 'states/Battle';
 import NorthKingdom from 'levels/NorthKingdom';
 import StormlandsKingdom from 'levels/StormlandsKingdom';
+import PrincipalityOfDorne from 'levels/PrincipalityOfDorne';
 
 class Game extends Phaser.Game {
 
@@ -13,6 +14,7 @@ class Game extends Phaser.Game {
 		this.state.add('Battle', Battle, false);
 		this.state.add('NorthKingdom', NorthKingdom, false);
 		this.state.add('StormlandsKingdom', StormlandsKingdom, false);
+		this.state.add('PrincipalityOfDorne', PrincipalityOfDorne, false);
 		this.state.start('Boot');
 	}
 }

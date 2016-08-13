@@ -4,8 +4,9 @@ import NPC02 from 'prefabs/NPC02';
 export default class StormlandsKingdom extends Phaser.State {
 	preload() {
 		this.load.spritesheet('npc02', "assets/spritesheets/npc02.png", 64, 64, 1);
-		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
+		this.load.text('dialogue', 'assets/dialogue/NPC02.json');
 		this.load.text('characters', 'assets/characters.json');
+		this.game.load.audio('magical_theme', 'assets/audio/magical_theme.mp3');
 	}
 	create() {
         // add map
@@ -23,6 +24,9 @@ export default class StormlandsKingdom extends Phaser.State {
 		this.blockedLayer.setScale(3.5, 3.5);
         this.blockedLayer.resizeWorld();
         this.blockedLayer.smoothed = false;
+
+		this.game.music = this.game.add.audio('magical_theme');
+		this.game.music.play();
 
         // add player
 		this.player = new Player(this.game);

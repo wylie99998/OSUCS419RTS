@@ -21,6 +21,10 @@ var _StormlandsKingdom = require('levels/StormlandsKingdom');
 
 var _StormlandsKingdom2 = _interopRequireDefault(_StormlandsKingdom);
 
+var _PrincipalityOfDorne = require('levels/PrincipalityOfDorne');
+
+var _PrincipalityOfDorne2 = _interopRequireDefault(_PrincipalityOfDorne);
+
 function _interopRequireDefault(obj) {
 	return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -56,6 +60,7 @@ var Game = function (_Phaser$Game) {
 		_this.state.add('Battle', _Battle2.default, false);
 		_this.state.add('NorthKingdom', _NorthKingdom2.default, false);
 		_this.state.add('StormlandsKingdom', _StormlandsKingdom2.default, false);
+		_this.state.add('PrincipalityOfDorne', _PrincipalityOfDorne2.default, false);
 		_this.state.start('Boot');
 		return _this;
 	}
@@ -65,7 +70,7 @@ var Game = function (_Phaser$Game) {
 
 new Game();
 
-},{"levels/NorthKingdom":2,"levels/StormlandsKingdom":3,"states/Battle":8,"states/Boot":9,"states/Preload":10}],2:[function(require,module,exports){
+},{"levels/NorthKingdom":2,"levels/PrincipalityOfDorne":3,"levels/StormlandsKingdom":4,"states/Battle":10,"states/Boot":11,"states/Preload":12}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -127,6 +132,7 @@ var NorthKingdom = function (_Phaser$State) {
 																		this.load.spritesheet('npc01', "assets/spritesheets/npc01.png", 64, 64, 1);
 																		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
 																		this.load.text('characters', 'assets/characters.json');
+																		this.game.load.audio('the_kings_crowning', 'assets/audio/the_kings_crowning_v1.mp3');
 												}
 						}, {
 												key: 'create',
@@ -152,6 +158,9 @@ var NorthKingdom = function (_Phaser$State) {
 																		this.borderLayer.resizeWorld();
 																		this.borderLayer.smoothed = false;
 
+																		this.game.music = this.game.add.audio('the_kings_crowning');
+																		this.game.music.play();
+
 																		// add player
 																		this.player = new _Player2.default(this.game);
 																		this.add.existing(this.player);
@@ -174,7 +183,116 @@ var NorthKingdom = function (_Phaser$State) {
 
 exports.default = NorthKingdom;
 
-},{"prefabs/NPC01":4,"prefabs/Player":6}],3:[function(require,module,exports){
+},{"prefabs/NPC01":5,"prefabs/Player":8}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+						value: true
+});
+
+var _createClass = function () {
+						function defineProperties(target, props) {
+												for (var i = 0; i < props.length; i++) {
+																		var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+												}
+						}return function (Constructor, protoProps, staticProps) {
+												if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+						};
+}();
+
+var _Player = require('prefabs/Player');
+
+var _Player2 = _interopRequireDefault(_Player);
+
+var _NPC = require('prefabs/NPC03');
+
+var _NPC2 = _interopRequireDefault(_NPC);
+
+function _interopRequireDefault(obj) {
+						return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+						if (!(instance instanceof Constructor)) {
+												throw new TypeError("Cannot call a class as a function");
+						}
+}
+
+function _possibleConstructorReturn(self, call) {
+						if (!self) {
+												throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+						}return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+						if (typeof superClass !== "function" && superClass !== null) {
+												throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+						}subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var PrincipalityOfDorne = function (_Phaser$State) {
+						_inherits(PrincipalityOfDorne, _Phaser$State);
+
+						function PrincipalityOfDorne() {
+												_classCallCheck(this, PrincipalityOfDorne);
+
+												return _possibleConstructorReturn(this, Object.getPrototypeOf(PrincipalityOfDorne).apply(this, arguments));
+						}
+
+						_createClass(PrincipalityOfDorne, [{
+												key: 'preload',
+												value: function preload() {
+																		this.load.spritesheet('npc03', "assets/spritesheets/npc03.png", 64, 64, 1);
+																		this.load.text('dialogue', 'assets/dialogue/NPC03.json');
+																		this.load.text('characters', 'assets/characters.json');
+												}
+						}, {
+												key: 'create',
+												value: function create() {
+																		// add map
+																		this.map = this.add.tilemap('principality_of_dorne');
+																		this.map.addTilesetImage('sheet', 'sheet');
+
+																		// add layers from map
+																		this.backgroundLayer = this.map.createLayer('backgroundLayer');
+																		this.backgroundLayer.scale.setTo(3.5, 3.5);
+																		this.backgroundLayer.resizeWorld();
+																		this.backgroundLayer.smoothed = false;
+
+																		this.blockedLayer = this.map.createLayer('borderLayer');
+																		this.blockedLayer.setScale(3.5, 3.5);
+																		this.blockedLayer.resizeWorld();
+																		this.blockedLayer.smoothed = false;
+
+																		this.blockedLayer = this.map.createLayer('blockedLayer');
+																		this.map.setCollisionBetween(1, 256, true, 'blockedLayer');
+																		this.blockedLayer.setScale(3.5, 3.5);
+																		this.blockedLayer.resizeWorld();
+																		this.blockedLayer.smoothed = false;
+
+																		// add player
+																		this.player = new _Player2.default(this.game);
+																		this.add.existing(this.player);
+																		this.player.position.x = 1230;
+																		this.player.position.y = 1400;
+
+																		// add npc
+																		this.npc03 = new _NPC2.default(this.game);
+																		this.add.existing(this.npc03);
+												}
+						}, {
+												key: 'update',
+												value: function update() {
+																		this.game.physics.arcade.collide(this.player, this.blockedLayer);
+												}
+						}]);
+
+						return PrincipalityOfDorne;
+}(Phaser.State);
+
+exports.default = PrincipalityOfDorne;
+
+},{"prefabs/NPC03":7,"prefabs/Player":8}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -234,8 +352,9 @@ var StormlandsKingdom = function (_Phaser$State) {
 												key: 'preload',
 												value: function preload() {
 																		this.load.spritesheet('npc02', "assets/spritesheets/npc02.png", 64, 64, 1);
-																		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
+																		this.load.text('dialogue', 'assets/dialogue/NPC02.json');
 																		this.load.text('characters', 'assets/characters.json');
+																		this.game.load.audio('magical_theme', 'assets/audio/magical_theme.mp3');
 												}
 						}, {
 												key: 'create',
@@ -255,6 +374,9 @@ var StormlandsKingdom = function (_Phaser$State) {
 																		this.blockedLayer.setScale(3.5, 3.5);
 																		this.blockedLayer.resizeWorld();
 																		this.blockedLayer.smoothed = false;
+
+																		this.game.music = this.game.add.audio('magical_theme');
+																		this.game.music.play();
 
 																		// add player
 																		this.player = new _Player2.default(this.game);
@@ -278,7 +400,7 @@ var StormlandsKingdom = function (_Phaser$State) {
 
 exports.default = StormlandsKingdom;
 
-},{"prefabs/NPC02":5,"prefabs/Player":6}],4:[function(require,module,exports){
+},{"prefabs/NPC02":6,"prefabs/Player":8}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -368,12 +490,12 @@ var NPC01 = function (_Phaser$Sprite) {
         value: function checkAnswer(selected) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
-            if(Cookies.get('NPC01') === undefined){
-            Cookies.set('NPC01', '0', { expires: 7 });
-        }
-        if (selectedAnswer == correctAnswer) {
-            var counterCookie = parseInt(Cookies.get('NPC01')) + 1;
-            Cookies.set('NPC01', counterCookie.toString(), { expires: 7 });
+            if (Cookies.get('NPC01') === undefined) {
+                Cookies.set('NPC01', '0', { expires: 7 });
+            }
+            if (selectedAnswer == correctAnswer) {
+                var counterCookie = parseInt(Cookies.get('NPC01')) + 1;
+                Cookies.set('NPC01', counterCookie.toString(), { expires: 7 });
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
@@ -414,7 +536,7 @@ var NPC01 = function (_Phaser$Sprite) {
 
 exports.default = NPC01;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -504,12 +626,12 @@ var NPC02 = function (_Phaser$Sprite) {
         value: function checkAnswer(selected) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
-            if(Cookies.get('NPC02') === undefined){
-            Cookies.set('NPC02', '0', { expires: 7 });
-        }
-        if (selectedAnswer == correctAnswer) {
-            var counterCookie = parseInt(Cookies.get('NPC02')) + 1;
-            Cookies.set('NPC02', counterCookie.toString(), { expires: 7 });
+            if (Cookies.get('NPC02') === undefined) {
+                Cookies.set('NPC02', '0', { expires: 7 });
+            }
+            if (selectedAnswer == correctAnswer) {
+                var counterCookie = parseInt(Cookies.get('NPC02')) + 1;
+                Cookies.set('NPC02', counterCookie.toString(), { expires: 7 });
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
@@ -550,7 +672,138 @@ var NPC02 = function (_Phaser$Sprite) {
 
 exports.default = NPC02;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+}();
+
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
+
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var NPC02 = function (_Phaser$Sprite) {
+    _inherits(NPC02, _Phaser$Sprite);
+
+    function NPC02(game) {
+        _classCallCheck(this, NPC02);
+
+        // enable interaction with player
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NPC02).call(this, game, 1950, 850, 'npc03', 0));
+
+        _this.scale.setTo(1.1);
+        _this.inputEnabled = true;
+        _this.events.onInputDown.add(_this.startDialogue, _this);
+        return _this;
+    }
+
+    _createClass(NPC02, [{
+        key: 'startDialogue',
+        value: function startDialogue() {
+            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.totalCorrect = 0;
+            this.party = [];
+            this.id = this.game.dialogue.start;
+            this.showDialogue(this.game.dialogue, this.id);
+        }
+    }, {
+        key: 'showDialogue',
+        value: function showDialogue(dialogue, id) {
+            var x = 400,
+                y = 700;
+
+            // show question
+            var question = dialogue['elements'][id].npc;
+            this.style = {
+                font: "22px Arial",
+                fill: "white",
+                align: "center",
+                backgroundColor: "000"
+            };
+            this.question = this.game.add.text(this.game.world.centerX + x, y, question, this.style);
+
+            // show answers and add input to click
+            var answers = dialogue['elements'][id].character;
+            this.answers_set = [];
+            for (var i in answers) {
+                this.answers_set[i] = this.game.add.text(this.game.world.centerX + x, y += 60, answers[i][i], this.style);
+                this.answers_set[i].inputEnabled = true;
+                this.answers_set[i].events.onInputDown.add(this.checkAnswer, this);
+            }
+        }
+    }, {
+        key: 'checkAnswer',
+        value: function checkAnswer(selected) {
+            var selectedAnswer = selected.text;
+            var correctAnswer = this.game.dialogue['elements'][this.id].correct;
+            if (selectedAnswer == correctAnswer) {
+                this.assignParty();
+            } else {
+                console.log("You got it wrong...");
+            }
+            this.updateDialogue();
+        }
+    }, {
+        key: 'updateDialogue',
+        value: function updateDialogue() {
+            // update id to point to next question
+            this.id = this.game.dialogue['elements'][this.id].followup;
+            if (this.id == "") {
+                this.startBattle(this.party);
+            }
+
+            // remove question and answers from game
+            this.question.destroy();
+            this.answers_set.forEach(function (answer) {
+                answer.destroy();
+            });
+            this.showDialogue(this.game.dialogue, this.id);
+        }
+    }, {
+        key: 'assignParty',
+        value: function assignParty() {
+            this.party.push({ name: 'thief' });
+        }
+    }, {
+        key: 'startBattle',
+        value: function startBattle(party) {
+            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.game.state.start('Battle', true, false, party);
+        }
+    }]);
+
+    return NPC02;
+}(Phaser.Sprite);
+
+exports.default = NPC02;
+
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -650,7 +903,7 @@ var Player = function (_Phaser$Sprite) {
 
 exports.default = Player;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -700,7 +953,7 @@ var PlayerUnit = function (_Phaser$Sprite) {
 
 exports.default = PlayerUnit;
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -760,6 +1013,7 @@ var Battle = function (_Phaser$State) {
     }, {
         key: 'preload',
         value: function preload() {
+            this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
 
@@ -767,7 +1021,7 @@ var Battle = function (_Phaser$State) {
             for (var character in assets) {
                 this.load.spritesheet(assets[character].name, assets_data.assets[assets[character].name].source, assets_data.assets[assets[character].name].width, assets_data.assets[assets[character].name].height, 12);
             }
-            this.load.spritesheet('ultimate_defender', assets_data.assets['ultimate_defender'].source, assets_data.assets['ultimate_defender'].width, assets_data.assets['ultimate_defender'].height, 12);
+            this.load.spritesheet('orc_spear', assets_data.assets['orc_spear'].source, assets_data.assets['orc_spear'].width, assets_data.assets['orc_spear'].height, 12);
         }
     }, {
         key: 'create',
@@ -784,6 +1038,9 @@ var Battle = function (_Phaser$State) {
             this.backgroundLayer.smoothed = false;
             this.borderLayer.smoothed = false;
 
+            this.game.music = this.game.add.audio('gran_batalla');
+            this.game.music.play();
+
             // create characters in party
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
@@ -797,7 +1054,7 @@ var Battle = function (_Phaser$State) {
 
             // create opponent's party
             for (var character in assets) {
-                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['ultimate_defender'].position.x, assets_data.prefabs['ultimate_defender'].position.y += 100, 'ultimate_defender', assets_data.prefabs['ultimate_defender'].properties.stats);
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats);
                 prefabs.push(this.character);
                 this.add.existing(this.character);
             }
@@ -836,7 +1093,7 @@ var Battle = function (_Phaser$State) {
 
 exports.default = Battle;
 
-},{"prefabs/PlayerUnit":7}],9:[function(require,module,exports){
+},{"prefabs/PlayerUnit":9}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -899,7 +1156,7 @@ var Boot = function (_Phaser$State) {
 
 exports.default = Boot;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -948,10 +1205,13 @@ var Preload = function (_Phaser$State) {
         value: function preload() {
             this.load.tilemap('north_kingdom', 'assets/tilemaps/north_kingdom.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.tilemap('stormlands_kingdom', 'assets/tilemaps/stormlands_kingdom.json', null, Phaser.Tilemap.TILED_JSON);
+            this.load.tilemap('principality_of_dorne', 'assets/tilemaps/principality_of_dorne.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.tilemap('battle', 'assets/tilemaps/battle.json', null, Phaser.Tilemap.TILED_JSON);
             this.load.image('tiles', 'assets/spritesheets/Tiny16.png');
             this.load.image('snowytiles', 'assets/spritesheets/snowtiles.png');
-            this.load.spritesheet('hero', "assets/spritesheets/hero.png", 64, 64, 178);
+            this.load.image('sheet', 'assets/spritesheets/sheet.png');
+            this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 64, 64, 178);
+            this.game.load.audio('soliloquy', 'assets/audio/Soliloquy_1.mp3');
         }
     }, {
         key: 'create',
@@ -960,11 +1220,30 @@ var Preload = function (_Phaser$State) {
             this.image.scale.setTo(0.9, 0.63);
             this.image.inputEnabled = true;
             this.image.events.onInputDown.add(this.startGame, this);
+
+            this.game.music = this.game.add.audio('soliloquy');
+            this.game.music.play();
+
+            this.key1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+            this.key1.onDown.add(this.startGame, this);
+
+            this.key2 = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+            this.key2.onDown.add(this.startGame, this);
+
+            this.key3 = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+            this.key3.onDown.add(this.startGame, this);
         }
     }, {
         key: 'startGame',
         value: function startGame() {
-            this.state.start('StormlandsKingdom');
+            this.game.music.pause();
+            if (this.key1._justDown) {
+                this.state.start('NorthKingdom');
+            } else if (this.key2._justDown) {
+                this.state.start('StormlandsKingdom');
+            } else if (this.key3._justDown) {
+                this.state.start('PrincipalityOfDorne');
+            }
         }
     }]);
 

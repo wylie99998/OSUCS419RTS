@@ -5,6 +5,7 @@ export default class Battle extends Phaser.State {
         this.game.party = party;
     }
     preload() {
+        this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
         var assets = this.game.party;
         var assets_data = JSON.parse(this.cache.getText('characters'));
 
@@ -18,10 +19,10 @@ export default class Battle extends Phaser.State {
             );
         }
         this.load.spritesheet (
-            'ultimate_defender',
-            assets_data.assets['ultimate_defender'].source,
-            assets_data.assets['ultimate_defender'].width,
-            assets_data.assets['ultimate_defender'].height, 12
+            'orc_spear',
+            assets_data.assets['orc_spear'].source,
+            assets_data.assets['orc_spear'].width,
+            assets_data.assets['orc_spear'].height, 12
 
         );
     }
@@ -37,6 +38,9 @@ export default class Battle extends Phaser.State {
         this.borderLayer.resizeWorld();
 		this.backgroundLayer.smoothed = false;
         this.borderLayer.smoothed = false;
+
+        this.game.music = this.game.add.audio('gran_batalla');
+        this.game.music.play();
 
         // create characters in party
         var assets = this.game.party;
@@ -59,10 +63,10 @@ export default class Battle extends Phaser.State {
         for (var character in assets) {
             this.character = new PlayerUnit (
                 this.game,
-                assets_data.prefabs['ultimate_defender'].position.x,
-                assets_data.prefabs['ultimate_defender'].position.y+=100,
-                'ultimate_defender',
-                assets_data.prefabs['ultimate_defender'].properties.stats
+                assets_data.prefabs['orc_spear'].position.x,
+                assets_data.prefabs['orc_spear'].position.y+=100,
+                'orc_spear',
+                assets_data.prefabs['orc_spear'].properties.stats
             );
             prefabs.push(this.character);
             this.add.existing(this.character);
@@ -81,12 +85,12 @@ export default class Battle extends Phaser.State {
         //prefabs.events.onInputDown.add(this.attack, this)
     }
     attack() {
-        console.log(this)
+        console.log(this);
     }
     update() {
 
     }
     effect() {
-        console.log('hit')
+        console.log('hit');
     }
 }
