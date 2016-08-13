@@ -1181,7 +1181,7 @@ var PlayerUnit = function (_Phaser$Sprite) {
         _this.inputEnabled = true;
 
         _this.animations.add("attack", [0, 1, 2, 3, 4, 5, 0], 8, false);
-        _this.animations.play("attack");
+        //this.animations.play("attack");
         _this.attack = stats.attack;
         _this.defense = stats.defense;
         _this.health = stats.health;
@@ -1285,78 +1285,104 @@ var Battle = function (_Phaser$State) {
             // create characters in party
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
-            var prefabs = [];
+            var party = [];
             for (var character in assets) {
                 this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs[assets[character].name].position.x, assets_data.prefabs[assets[character].name].position.y += 100, assets[character].name, assets_data.prefabs[assets[character].name].properties.stats, assets_data.prefabs[assets[character].name].type);
-                prefabs.push(this.character);
+                party.push(this.character);
                 this.add.existing(this.character);
             }
             delete this.character;
 
+            var enemy = [];
             // create opponent's party
             for (var character in assets) {
                 this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats,
                 //assets_data.prefabs[assets[character].name].type
                 assets_data.prefabs['orc_spear'].type);
-                prefabs.push(this.character);
+                enemy.push(this.character);
                 this.add.existing(this.character);
             }
 
             delete this.character;
-            this.whoseTurn(prefabs);
+            this.whoseTurn(party, enemy);
+            //this.whoseTurn = this.sara.name;
         }
     }, {
         key: 'whoseTurn',
-        value: function whoseTurn(prefabs) {
-            this.current_unit = prefabs.shift();
+        value: function whoseTurn(party, enemy) {
+            if (this.isPartysTurn) {
+                this.isPartysTurn = false;
+                this.current_unit = party.shift();
+            } else {
+                this.isPartysTurn = true;
+                this.current_unit = enemy.shift();
+            }
+
             //this.attack(this.current_unit);
             if (this.current_unit.alive) {
-                prefabs.push(this.current_unit);
-                this.act(this.current_unit, prefabs);
+
+                if (this.isPartysTurn) {
+                    enemy.push(this.current_unit);
+                    this.act(this.current_unit, enemy, party);
+                } else {
+                    party.push(this.current_unit);
+                    this.act(this.current_unit, enemy, party);
+                }
             } else {
-                this.whoseTurn(prefabs);
+                this.whoseTurn(party, enemy);
             }
         }
     }, {
         key: 'act',
-        value: function act(current_unit, prefabs) {
-            //console.log(prefabs)
+        value: function act(current_unit, enemy, party) {
             var target_index, target, damage;
             var party_size = this.game.party.length;
-
             if (current_unit.type == "enemy_unit") {
                 // randomly choose target
-                target_index = this.rnd.between(0, party_size - 1);
-                target = prefabs[target_index];
-                this.attack(current_unit, target);
+                target_index = this.rnd.between(0, this.game.party.length - 1);
+                target = party[target_index];
+                this.attack(current_unit, target, enemy, party);
             } else {
-                target_index = this.rnd.between(party_size, prefabs.length - 1);
-                target = prefabs[target_index];
-                this.attack(current_unit, target, prefabs);
+                target_index = this.rnd.between(0, this.game.party.length - 1);
+                target = enemy[target_index];
+                this.attack(current_unit, target, enemy, party);
             }
         }
     }, {
         key: 'attack',
-        value: function attack(current_unit, target, prefabs) {
-            var damage, attack_multiplier, defense_multiplier, posX, posY;
+        value: function attack(current_unit, target, enemy, party) {
+            var damage, attack_multiplier, defense_multiplier;
+            var distanceMovedX = Math.abs(current_unit.position.x - target.position.x);
+            var distanceMovedY = Math.abs(current_unit.position.y - target.position.y);
+            var origY = current_unit.position.y;
             attack_multiplier = this.game.rnd.realInRange(0.8, 1.2);
             defense_multiplier = this.game.rnd.realInRange(0.8, 1.2);
             damage = Math.round(attack_multiplier * current_unit.attack - defense_multiplier * target.defense);
-            posX = current_unit.position.x;
-            posY = current_unit.position.y;
 
-            setTimeout(function () {
-                current_unit.position.x = posX;
-                current_unit.position.y = posY;
-            }, 2000);
+            if (current_unit.type == "enemy_unit") {
+                current_unit.position.x = target.position.x - 50;
+                current_unit.position.y = target.position.y;
+            } else {
+                current_unit.position.x = target.position.x + 50;
+                current_unit.position.y = target.position.y;
+            }
+
+            if (current_unit.type == "enemy_unit") {
+                current_unit.position.x = current_unit.position.x - distanceMovedX + 50;
+                current_unit.position.y = origY;
+            } else {
+                current_unit.position.x = current_unit.position.x + distanceMovedX - 50;
+                current_unit.position.y = origY;
+            }
 
             target.health -= damage;
 
             if (target.health <= 0) {
+                current_unit.alive = false;
                 target.health = 0;
                 this.kill(target);
             }
-            this.whoseTurn(prefabs);
+            this.whoseTurn(enemy, party);
         }
     }, {
         key: 'kill',
