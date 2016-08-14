@@ -138,6 +138,10 @@ export default class Battle extends Phaser.State {
         damage = Math.round((attack_multiplier * this.current_unit.attack) - (defense_multiplier * this.target.defense));
 
         if (this.current_unit.type == "enemy_unit") {
+			if(!(Cookies.get('hard') === undefined)){
+					damage = damage * 1.2;
+					console.log("on hard");
+				}
             this.current_unit.position.x = this.target.position.x - 50;
             this.current_unit.position.y = this.target.position.y;
         } else {
