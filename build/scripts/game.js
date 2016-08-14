@@ -923,7 +923,7 @@ var NPC02 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            if (this.totalCorrect == 0) {
+            if (this.totalCorrect === 0) {
                 this.game.state.start('Preload', true, false);
             } else {
                 this.game.music.pause();
@@ -1060,7 +1060,7 @@ var NPC04 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            if (this.totalCorrect == 0) {
+            if (this.totalCorrect === 0) {
                 this.game.state.start('Preload', true, false);
             } else {
                 this.game.music.pause();
