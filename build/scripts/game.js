@@ -138,6 +138,13 @@ var NorthKingdom = function (_Phaser$State) {
 																		this.load.text('dialogue', 'assets/dialogue/NPC01.json');
 																		this.load.text('characters', 'assets/characters.json');
 																		this.game.load.audio('the_kings_crowning', 'assets/audio/the_kings_crowning_v1.mp3');
+																		if ((!(Cookies.get('NPC01') === undefined)) && (!(Cookies.get('NPC02') === undefined)) && (!(Cookies.get('NPC03') === undefined)) && (!(Cookies.get('NPC04') === undefined))){
+Cookies.remove('NPC01');
+Cookies.remove('NPC02');
+Cookies.remove('NPC03');
+Cookies.remove('NPC04');
+window.location.replace("assets/images/end.jpg");
+}
 												}
 						}, {
 												key: 'create',
@@ -1590,18 +1597,22 @@ var Preload = function (_Phaser$State) {
 
             this.game.music = this.game.add.audio('soliloquy');
             this.game.music.play();
-
+            if (Cookies.get('NPC01') === undefined) {
             this.key1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
             this.key1.onDown.add(this.startGame, this);
-
+            }
+            if (Cookies.get('NPC02') === undefined) {
             this.key2 = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
             this.key2.onDown.add(this.startGame, this);
-
+            }
+            if (Cookies.get('NPC03') === undefined) {
             this.key3 = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
             this.key3.onDown.add(this.startGame, this);
-
+            }
+            if (Cookies.get('NPC04') === undefined) {
             this.key4 = this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
             this.key4.onDown.add(this.startGame, this);
+            }
         }
     }, {
         key: 'startGame',
