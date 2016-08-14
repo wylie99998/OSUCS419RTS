@@ -891,7 +891,12 @@ var NPC02 = function (_Phaser$Sprite) {
         value: function checkAnswer(selected) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
+            if (Cookies.get('NPC03') === undefined) {
+                Cookies.set('NPC03', '0', { expires: 7 });
+            }
             if (selectedAnswer == correctAnswer) {
+                var counterCookie = parseInt(Cookies.get('NPC03')) + 1;
+                Cookies.set('NPC03', counterCookie.toString(), { expires: 7 });
                 this.totalCorrect++;
                 this.assignParty();
             } else {
@@ -1028,7 +1033,12 @@ var NPC04 = function (_Phaser$Sprite) {
         value: function checkAnswer(selected) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
+            if (Cookies.get('NPC04') === undefined) {
+                Cookies.set('NPC04', '0', { expires: 7 });
+            }
             if (selectedAnswer == correctAnswer) {
+                var counterCookie = parseInt(Cookies.get('NPC04')) + 1;
+                Cookies.set('NPC04', counterCookie.toString(), { expires: 7 });
                 this.totalCorrect++;
                 this.assignParty();
             } else {
