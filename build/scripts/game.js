@@ -1296,27 +1296,33 @@ var Battle = function (_Phaser$State) {
 
             this.enemy = [];
             // create opponent's party
-            /*for (var character in assets) {
-                this.character = new PlayerUnit (
-                    this.game,
-                    assets_data.prefabs['orc_spear'].position.x,
-                    assets_data.prefabs['orc_spear'].position.y+=100,
-                    'orc_spear',
-                    assets_data.prefabs['orc_spear'].properties.stats,
-                    assets_data.prefabs['orc_spear'].type
-                );
+            for (var character in assets) {
+                this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats, assets_data.prefabs['orc_spear'].type);
                 this.enemy.push(this.character);
                 this.add.existing(this.character);
-            }*/
-            this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['orc_spear'].position.x, assets_data.prefabs['orc_spear'].position.y += 100, 'orc_spear', assets_data.prefabs['orc_spear'].properties.stats, assets_data.prefabs['orc_spear'].type);
+            }
+            /*this.character = new PlayerUnit (
+                this.game,
+                assets_data.prefabs['orc_spear'].position.x,
+                assets_data.prefabs['orc_spear'].position.y+=100,
+                'orc_spear',
+                assets_data.prefabs['orc_spear'].properties.stats,
+                assets_data.prefabs['orc_spear'].type
+            );
             this.enemy.push(this.character);
             this.add.existing(this.character);
-            delete this.character;
-
-            this.character = new _PlayerUnit2.default(this.game, assets_data.prefabs['skeleton_bow'].position.x, assets_data.prefabs['skeleton_bow'].position.y += 100, 'skeleton_bow', assets_data.prefabs['skeleton_bow'].properties.stats, assets_data.prefabs['skeleton_bow'].type);
+            delete(this.character);
+             this.character = new PlayerUnit (
+                this.game,
+                assets_data.prefabs['skeleton_bow'].position.x,
+                assets_data.prefabs['skeleton_bow'].position.y+=100,
+                'skeleton_bow',
+                assets_data.prefabs['skeleton_bow'].properties.stats,
+                assets_data.prefabs['skeleton_bow'].type
+            );
             this.enemy.push(this.character);
             this.add.existing(this.character);
-            delete this.character;
+            delete(this.character);*/
 
             this.whoseTurn();
         }
@@ -1326,7 +1332,7 @@ var Battle = function (_Phaser$State) {
             if (this.isPartysTurn) {
                 this.isPartysTurn = false;
                 if (this.party.length == 0) {
-                    this.state.start('ReachKingdom');
+                    this.state.start('Preload');
                 } else {
                     this.current_unit = this.party.shift();
                 }
@@ -1410,11 +1416,13 @@ var Battle = function (_Phaser$State) {
         key: 'kill',
         value: function kill() {
             if (this.target.type == "enemy_unit") {
-                var popped = this.enemy.pop();
+                var curr = this.enemy.indexOf(this.target);
+                this.enemy.splice(curr, 1);
                 this.target.alive = false;
                 this.game.add.tween(this.target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             } else {
-                this.party.pop();
+                var curr = this.party.indexOf(this.target);
+                this.party.splice(curr, 1);
                 this.target.alive = false;
                 this.game.add.tween(this.target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
                 //console.log(this.party)

@@ -67,7 +67,7 @@ export default class Battle extends Phaser.State {
 
         this.enemy = [];
         // create opponent's party
-        /*for (var character in assets) {
+        for (var character in assets) {
             this.character = new PlayerUnit (
                 this.game,
                 assets_data.prefabs['orc_spear'].position.x,
@@ -78,8 +78,8 @@ export default class Battle extends Phaser.State {
             );
             this.enemy.push(this.character);
             this.add.existing(this.character);
-        }*/
-        this.character = new PlayerUnit (
+        }
+        /*this.character = new PlayerUnit (
             this.game,
             assets_data.prefabs['orc_spear'].position.x,
             assets_data.prefabs['orc_spear'].position.y+=100,
@@ -101,7 +101,7 @@ export default class Battle extends Phaser.State {
         );
         this.enemy.push(this.character);
         this.add.existing(this.character);
-        delete(this.character);
+        delete(this.character);*/
 
         this.whoseTurn();
     }
@@ -109,7 +109,7 @@ export default class Battle extends Phaser.State {
         if (this.isPartysTurn) {
             this.isPartysTurn = false;
             if (this.party.length == 0) {
-                this.state.start('ReachKingdom');
+                this.state.start('Preload');
             } else {
                 this.current_unit = this.party.shift();
             }
@@ -186,11 +186,13 @@ export default class Battle extends Phaser.State {
     }
     kill() {
         if (this.target.type == "enemy_unit") {
-            var popped = this.enemy.pop();
+            var curr = this.enemy.indexOf(this.target);
+            this.enemy.splice(curr, 1);
             this.target.alive = false;
             this.game.add.tween(this.target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
         } else {
-            this.party.pop();
+            var curr = this.party.indexOf(this.target);
+            this.party.splice(curr, 1);
             this.target.alive = false;
             this.game.add.tween(this.target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
             //console.log(this.party)
