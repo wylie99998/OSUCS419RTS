@@ -1597,20 +1597,24 @@ var Preload = function (_Phaser$State) {
 
             this.game.music = this.game.add.audio('soliloquy');
             this.game.music.play();
-            if (Cookies.get('NPC01') === undefined) {
+            
             this.key1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+            if (Cookies.get('NPC01') === undefined) {
             this.key1.onDown.add(this.startGame, this);
             }
-            if (Cookies.get('NPC02') === undefined) {
+            
             this.key2 = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO);
+            if (Cookies.get('NPC02') === undefined) {
             this.key2.onDown.add(this.startGame, this);
             }
-            if (Cookies.get('NPC03') === undefined) {
+            
             this.key3 = this.game.input.keyboard.addKey(Phaser.Keyboard.THREE);
+            if (Cookies.get('NPC03') === undefined) {
             this.key3.onDown.add(this.startGame, this);
             }
-            if (Cookies.get('NPC04') === undefined) {
+            
             this.key4 = this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR);
+            if (Cookies.get('NPC04') === undefined) {
             this.key4.onDown.add(this.startGame, this);
             }
         }
