@@ -1325,19 +1325,23 @@ var Battle = function (_Phaser$State) {
         value: function whoseTurn() {
             if (this.isPartysTurn) {
                 this.isPartysTurn = false;
-                this.current_unit = this.party.shift();
+                if (this.party.length == 0) {
+                    this.state.start('ReachKingdom');
+                } else {
+                    this.current_unit = this.party.shift();
+                }
             } else {
                 this.isPartysTurn = true;
-                this.current_unit = this.enemy.shift();
+                if (this.enemy.length == 0) {
+                    this.state.start('ReachKingdom');
+                } else {
+                    this.current_unit = this.enemy.shift();
+                }
             }
-
-            if (this.enemy.length == 0) {
-                this.game.state.start("ReachKingdom");
-            }
-            if (this.current_unit.alive) {
+            if (this.current_unit.alive != false) {
+                this.current_unit.alive = true;
                 if (this.isPartysTurn) {
                     this.enemy.push(this.current_unit);
-                    console.log(this.enemy.length);
                     this.act();
                 } else {
                     this.party.push(this.current_unit);
@@ -1351,7 +1355,6 @@ var Battle = function (_Phaser$State) {
         key: 'act',
         value: function act() {
             var target_index;
-            var party_size = this.game.party.length;
             if (this.current_unit.type == "enemy_unit") {
                 // randomly choose target
                 target_index = this.rnd.between(0, this.party.length - 1);
@@ -1386,7 +1389,6 @@ var Battle = function (_Phaser$State) {
             this.target.health -= damage;
 
             if (this.target.health <= 0) {
-                this.current_unit.alive = false;
                 this.target.health = 0;
                 this.kill();
             }
@@ -1408,11 +1410,12 @@ var Battle = function (_Phaser$State) {
         key: 'kill',
         value: function kill() {
             if (this.target.type == "enemy_unit") {
-                this.enemy.pop(this.target);
+                var popped = this.enemy.pop();
+                this.target.alive = false;
                 this.game.add.tween(this.target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-                //console.log(this.enemy)
             } else {
-                this.party.pop(this.target);
+                this.party.pop();
+                this.target.alive = false;
                 this.game.add.tween(this.target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
                 //console.log(this.party)
             }

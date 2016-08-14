@@ -75,7 +75,7 @@
                 "group": "player_units",
                 "frame": 0,
                 "stats": {
-                    "attack": 15,
+                    "attack": 150,
                     "defense": 5,
                     "health": 80
                 }
