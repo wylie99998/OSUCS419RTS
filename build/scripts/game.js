@@ -258,6 +258,13 @@ var PrincipalityOfDorne = function (_Phaser$State) {
 																		this.load.text('dialogue', 'assets/dialogue/NPC03.json');
 																		this.load.text('characters', 'assets/characters.json');
 																		this.game.load.audio('no_more_magic', 'assets/audio/No_More_Magic_5.mp3');
+																		if ((!(Cookies.get('NPC01') === undefined)) && (!(Cookies.get('NPC02') === undefined)) && (!(Cookies.get('NPC03') === undefined)) && (!(Cookies.get('NPC04') === undefined))){
+Cookies.remove('NPC01');
+Cookies.remove('NPC02');
+Cookies.remove('NPC03');
+Cookies.remove('NPC04');
+window.location.replace("assets/images/end.jpg");
+}
 												}
 						}, {
 												key: 'create',
@@ -371,6 +378,13 @@ var ReachKingdom = function (_Phaser$State) {
 																		this.load.text('dialogue', 'assets/dialogue/NPC04.json');
 																		this.load.text('characters', 'assets/characters.json');
 																		this.game.load.audio('arabesque', 'assets/audio/Arabesque.mp3');
+																		if ((!(Cookies.get('NPC01') === undefined)) && (!(Cookies.get('NPC02') === undefined)) && (!(Cookies.get('NPC03') === undefined)) && (!(Cookies.get('NPC04') === undefined))){
+Cookies.remove('NPC01');
+Cookies.remove('NPC02');
+Cookies.remove('NPC03');
+Cookies.remove('NPC04');
+window.location.replace("assets/images/end.jpg");
+}
 												}
 						}, {
 												key: 'create',
@@ -479,6 +493,13 @@ var StormlandsKingdom = function (_Phaser$State) {
 																		this.load.text('dialogue', 'assets/dialogue/NPC02.json');
 																		this.load.text('characters', 'assets/characters.json');
 																		this.game.load.audio('magical_theme', 'assets/audio/magical_theme.mp3');
+																		if ((!(Cookies.get('NPC01') === undefined)) && (!(Cookies.get('NPC02') === undefined)) && (!(Cookies.get('NPC03') === undefined)) && (!(Cookies.get('NPC04') === undefined))){
+Cookies.remove('NPC01');
+Cookies.remove('NPC02');
+Cookies.remove('NPC03');
+Cookies.remove('NPC04');
+window.location.replace("assets/images/end.jpg");
+}
 												}
 						}, {
 												key: 'create',
@@ -1415,9 +1436,14 @@ var Battle = function (_Phaser$State) {
             damage = Math.round(attack_multiplier * this.current_unit.attack - defense_multiplier * this.target.defense);
 
             if (this.current_unit.type == "enemy_unit") {
+				if(!(Cookies.get('hard') === undefined)){
+					damage = damage * .5;
+					console.log("on hard");
+				}
                 this.current_unit.position.x = this.target.position.x - 50;
                 this.current_unit.position.y = this.target.position.y;
             } else {
+				
                 this.current_unit.position.x = this.target.position.x + 50;
                 this.current_unit.position.y = this.target.position.y;
             }
@@ -1617,6 +1643,9 @@ var Preload = function (_Phaser$State) {
             if (Cookies.get('NPC04') === undefined) {
             this.key4.onDown.add(this.startGame, this);
             }
+			
+			this.key9 = this.game.input.keyboard.addKey(Phaser.Keyboard.NINE);
+			this.key9.onDown.add(this.startGame, this);
         }
     }, {
         key: 'startGame',
@@ -1630,7 +1659,10 @@ var Preload = function (_Phaser$State) {
                 this.state.start('PrincipalityOfDorne');
             } else if (this.key4._justDown) {
                 this.state.start('ReachKingdom');
-            }
+            } else if (this.key9._justDown){
+				Cookies.set('hard', '1', { expires: 7 });
+				this.create();
+			}
         }
     }]);
 
