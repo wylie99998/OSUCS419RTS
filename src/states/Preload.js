@@ -10,7 +10,7 @@ export default class Preload extends Phaser.State {
         this.load.image('sheet', 'assets/spritesheets/sheet.png')
         this.load.image('town_tiles', 'assets/spritesheets/town_tiles.png');
         this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 64, 64, 178);
-        //this.game.load.audio('soliloquy', 'assets/audio/Soliloquy_1.mp3');
+        this.game.load.audio('soliloquy', 'assets/audio/Soliloquy_1.mp3');
     }
     create() {
         this.image = this.add.sprite(0, 0, 'splash');

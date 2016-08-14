@@ -1,11 +1,12 @@
 import PlayerUnit from 'prefabs/PlayerUnit';
 
 export default class Battle extends Phaser.State {
-    init(party) {
+    init(party, state) {
+        this.town = state
         this.game.party = party;
     }
     preload() {
-        //this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
+        this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
         var assets = this.game.party;
         var assets_data = JSON.parse(this.cache.getText('characters'));
 
@@ -79,36 +80,15 @@ export default class Battle extends Phaser.State {
             this.enemy.push(this.character);
             this.add.existing(this.character);
         }
-        /*this.character = new PlayerUnit (
-            this.game,
-            assets_data.prefabs['orc_spear'].position.x,
-            assets_data.prefabs['orc_spear'].position.y+=100,
-            'orc_spear',
-            assets_data.prefabs['orc_spear'].properties.stats,
-            assets_data.prefabs['orc_spear'].type
-        );
-        this.enemy.push(this.character);
-        this.add.existing(this.character);
-        delete(this.character);
-
-        this.character = new PlayerUnit (
-            this.game,
-            assets_data.prefabs['skeleton_bow'].position.x,
-            assets_data.prefabs['skeleton_bow'].position.y+=100,
-            'skeleton_bow',
-            assets_data.prefabs['skeleton_bow'].properties.stats,
-            assets_data.prefabs['skeleton_bow'].type
-        );
-        this.enemy.push(this.character);
-        this.add.existing(this.character);
-        delete(this.character);*/
 
         this.whoseTurn();
     }
     whoseTurn() {
+        console.log(this.town)
         if (this.isPartysTurn) {
             this.isPartysTurn = false;
             if (this.party.length == 0) {
+                this.game.music.pause();
                 this.state.start('Preload');
             } else {
                 this.current_unit = this.party.shift();
@@ -116,7 +96,8 @@ export default class Battle extends Phaser.State {
         } else {
             this.isPartysTurn = true;
             if (this.enemy.length == 0) {
-                this.state.start('ReachKingdom');
+                this.game.music.pause();
+                this.state.start(this.town);
             } else {
                 this.current_unit = this.enemy.shift();
             }
@@ -195,7 +176,6 @@ export default class Battle extends Phaser.State {
             this.party.splice(curr, 1);
             this.target.alive = false;
             this.game.add.tween(this.target).to({ alpha: 0}, 2000, Phaser.Easing.Linear.None, true);
-            //console.log(this.party)
         }
     }
 }

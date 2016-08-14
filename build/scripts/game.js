@@ -250,6 +250,7 @@ var PrincipalityOfDorne = function (_Phaser$State) {
 																		this.load.spritesheet('npc03', "assets/spritesheets/npc03.png", 64, 64, 1);
 																		this.load.text('dialogue', 'assets/dialogue/NPC03.json');
 																		this.load.text('characters', 'assets/characters.json');
+																		this.game.load.audio('no_more_magic', 'assets/audio/No_More_Magic_5.mp3');
 												}
 						}, {
 												key: 'create',
@@ -274,6 +275,9 @@ var PrincipalityOfDorne = function (_Phaser$State) {
 																		this.blockedLayer.setScale(3.5, 3.5);
 																		this.blockedLayer.resizeWorld();
 																		this.blockedLayer.smoothed = false;
+
+																		this.game.music = this.game.add.audio('no_more_magic');
+																		this.game.music.play();
 
 																		// add player
 																		this.player = new _Player2.default(this.game);
@@ -359,6 +363,7 @@ var ReachKingdom = function (_Phaser$State) {
 																		this.load.spritesheet('npc04', "assets/spritesheets/npc04.png", 64, 64, 1);
 																		this.load.text('dialogue', 'assets/dialogue/NPC04.json');
 																		this.load.text('characters', 'assets/characters.json');
+																		this.game.load.audio('arabesque', 'assets/audio/Arabesque.mp3');
 												}
 						}, {
 												key: 'create',
@@ -378,6 +383,9 @@ var ReachKingdom = function (_Phaser$State) {
 																		this.blockedLayer.setScale(3.5, 3.5);
 																		this.blockedLayer.resizeWorld();
 																		this.blockedLayer.smoothed = false;
+
+																		this.game.music = this.game.add.audio('arabesque');
+																		this.game.music.play();
 
 																		// add player
 																		this.player = new _Player2.default(this.game);
@@ -635,8 +643,13 @@ var NPC01 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-            this.game.state.start('Battle', true, false, party);
+            if (this.totalCorrect === 0) {
+                this.game.state.start('Preload', true, false);
+            } else {
+                this.game.music.pause();
+                this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+                this.game.state.start('Battle', true, false, party, 'StormlandsKingdom');
+            }
         }
     }]);
 
@@ -771,8 +784,13 @@ var NPC02 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-            this.game.state.start('Battle', true, false, party);
+            if (this.totalCorrect === 0) {
+                this.game.state.start('Preload', true, false);
+            } else {
+                this.game.music.pause();
+                this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+                this.game.state.start('Battle', true, false, party, 'PrincipalityOfDorne');
+            }
         }
     }]);
 
@@ -902,8 +920,13 @@ var NPC02 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-            this.game.state.start('Battle', true, false, party);
+            if (this.totalCorrect === 0) {
+                this.game.state.start('Preload', true, false);
+            } else {
+                this.game.music.pause();
+                this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+                this.game.state.start('Battle', true, false, party, 'ReachKingdom');
+            }
         }
     }]);
 
@@ -1033,8 +1056,13 @@ var NPC04 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-            this.game.state.start('Battle', true, false, party);
+            if (this.totalCorrect === 0) {
+                this.game.state.start('Preload', true, false);
+            } else {
+                this.game.music.pause();
+                this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+                this.game.state.start('Battle', true, false, party, 'NorthKingdom');
+            }
         }
     }]);
 
@@ -1248,13 +1276,14 @@ var Battle = function (_Phaser$State) {
 
     _createClass(Battle, [{
         key: 'init',
-        value: function init(party) {
+        value: function init(party, state) {
+            this.town = state;
             this.game.party = party;
         }
     }, {
         key: 'preload',
         value: function preload() {
-            //this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
+            this.game.load.audio('gran_batalla', 'assets/audio/Gran_Batalla.mp3');
             var assets = this.game.party;
             var assets_data = JSON.parse(this.cache.getText('characters'));
 
@@ -1301,37 +1330,17 @@ var Battle = function (_Phaser$State) {
                 this.enemy.push(this.character);
                 this.add.existing(this.character);
             }
-            /*this.character = new PlayerUnit (
-                this.game,
-                assets_data.prefabs['orc_spear'].position.x,
-                assets_data.prefabs['orc_spear'].position.y+=100,
-                'orc_spear',
-                assets_data.prefabs['orc_spear'].properties.stats,
-                assets_data.prefabs['orc_spear'].type
-            );
-            this.enemy.push(this.character);
-            this.add.existing(this.character);
-            delete(this.character);
-             this.character = new PlayerUnit (
-                this.game,
-                assets_data.prefabs['skeleton_bow'].position.x,
-                assets_data.prefabs['skeleton_bow'].position.y+=100,
-                'skeleton_bow',
-                assets_data.prefabs['skeleton_bow'].properties.stats,
-                assets_data.prefabs['skeleton_bow'].type
-            );
-            this.enemy.push(this.character);
-            this.add.existing(this.character);
-            delete(this.character);*/
 
             this.whoseTurn();
         }
     }, {
         key: 'whoseTurn',
         value: function whoseTurn() {
+            console.log(this.town);
             if (this.isPartysTurn) {
                 this.isPartysTurn = false;
                 if (this.party.length == 0) {
+                    this.game.music.pause();
                     this.state.start('Preload');
                 } else {
                     this.current_unit = this.party.shift();
@@ -1339,7 +1348,8 @@ var Battle = function (_Phaser$State) {
             } else {
                 this.isPartysTurn = true;
                 if (this.enemy.length == 0) {
-                    this.state.start('ReachKingdom');
+                    this.game.music.pause();
+                    this.state.start(this.town);
                 } else {
                     this.current_unit = this.enemy.shift();
                 }
@@ -1425,7 +1435,6 @@ var Battle = function (_Phaser$State) {
                 this.party.splice(curr, 1);
                 this.target.alive = false;
                 this.game.add.tween(this.target).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-                //console.log(this.party)
             }
         }
     }]);
@@ -1555,7 +1564,7 @@ var Preload = function (_Phaser$State) {
             this.load.image('sheet', 'assets/spritesheets/sheet.png');
             this.load.image('town_tiles', 'assets/spritesheets/town_tiles.png');
             this.load.spritesheet('hero', 'assets/spritesheets/hero.png', 64, 64, 178);
-            //this.game.load.audio('soliloquy', 'assets/audio/Soliloquy_1.mp3');
+            this.game.load.audio('soliloquy', 'assets/audio/Soliloquy_1.mp3');
         }
     }, {
         key: 'create',

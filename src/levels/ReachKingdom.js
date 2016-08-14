@@ -6,6 +6,7 @@ export default class ReachKingdom extends Phaser.State {
 		this.load.spritesheet('npc04', "assets/spritesheets/npc04.png", 64, 64, 1);
 		this.load.text('dialogue', 'assets/dialogue/NPC04.json');
 		this.load.text('characters', 'assets/characters.json');
+		this.game.load.audio('arabesque', 'assets/audio/Arabesque.mp3');
 	}
 	create() {
         // add map
@@ -23,6 +24,9 @@ export default class ReachKingdom extends Phaser.State {
 		this.blockedLayer.setScale(3.5, 3.5);
 		this.blockedLayer.resizeWorld();
 		this.blockedLayer.smoothed = false;
+
+		this.game.music = this.game.add.audio('arabesque');
+		this.game.music.play();
 
         // add player
 		this.player = new Player(this.game);

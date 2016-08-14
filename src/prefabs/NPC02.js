@@ -71,7 +71,12 @@ export default class NPC02 extends Phaser.Sprite {
         this.party.push({ name: 'thief' });
     }
     startBattle(party) {
-        this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
-        this.game.state.start('Battle', true, false, party)
+        if (this.totalCorrect === 0) {
+            this.game.state.start('Preload', true, false);
+        } else {
+            this.game.music.pause();
+            this.game.dialogue = JSON.parse(this.game.cache.getText('dialogue'));
+            this.game.state.start('Battle', true, false, party, 'PrincipalityOfDorne');
+        }
     }
 }

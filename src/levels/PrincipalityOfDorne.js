@@ -6,6 +6,7 @@ export default class PrincipalityOfDorne extends Phaser.State {
 		this.load.spritesheet('npc03', "assets/spritesheets/npc03.png", 64, 64, 1);
 		this.load.text('dialogue', 'assets/dialogue/NPC03.json');
 		this.load.text('characters', 'assets/characters.json');
+		this.game.load.audio('no_more_magic', 'assets/audio/No_More_Magic_5.mp3');
 	}
 	create() {
         // add map
@@ -28,6 +29,9 @@ export default class PrincipalityOfDorne extends Phaser.State {
 		this.blockedLayer.setScale(3.5, 3.5);
         this.blockedLayer.resizeWorld();
         this.blockedLayer.smoothed = false;
+
+		this.game.music = this.game.add.audio('no_more_magic');
+		this.game.music.play();
 
         // add player
 		this.player = new Player(this.game);
