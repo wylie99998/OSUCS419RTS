@@ -49,6 +49,7 @@ export default class NPC01 extends Phaser.Sprite {
         if (selectedAnswer == correctAnswer) {
             var counterCookie = parseInt(Cookies.get('NPC01')) + 1;
             Cookies.set('NPC01', counterCookie.toString(), { expires: 7 });
+            this.totalCorrect++;
             this.assignParty();
         } else {
             console.log("You got it wrong...");

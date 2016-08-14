@@ -613,6 +613,7 @@ var NPC01 = function (_Phaser$Sprite) {
             if (selectedAnswer == correctAnswer) {
                 var counterCookie = parseInt(Cookies.get('NPC01')) + 1;
                 Cookies.set('NPC01', counterCookie.toString(), { expires: 7 });
+                this.totalCorrect++;
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
@@ -754,6 +755,7 @@ var NPC02 = function (_Phaser$Sprite) {
             if (selectedAnswer == correctAnswer) {
                 var counterCookie = parseInt(Cookies.get('NPC02')) + 1;
                 Cookies.set('NPC02', counterCookie.toString(), { expires: 7 });
+                this.totalCorrect++;
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
@@ -890,6 +892,7 @@ var NPC02 = function (_Phaser$Sprite) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
             if (selectedAnswer == correctAnswer) {
+                this.totalCorrect++;
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
@@ -920,7 +923,7 @@ var NPC02 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            if (this.totalCorrect === 0) {
+            if (this.totalCorrect == 0) {
                 this.game.state.start('Preload', true, false);
             } else {
                 this.game.music.pause();
@@ -1026,6 +1029,7 @@ var NPC04 = function (_Phaser$Sprite) {
             var selectedAnswer = selected.text;
             var correctAnswer = this.game.dialogue['elements'][this.id].correct;
             if (selectedAnswer == correctAnswer) {
+                this.totalCorrect++;
                 this.assignParty();
             } else {
                 console.log("You got it wrong...");
@@ -1056,7 +1060,7 @@ var NPC04 = function (_Phaser$Sprite) {
     }, {
         key: 'startBattle',
         value: function startBattle(party) {
-            if (this.totalCorrect === 0) {
+            if (this.totalCorrect == 0) {
                 this.game.state.start('Preload', true, false);
             } else {
                 this.game.music.pause();

@@ -44,6 +44,7 @@ export default class NPC02 extends Phaser.Sprite {
         let selectedAnswer = selected.text;
         let correctAnswer = this.game.dialogue['elements'][this.id].correct;
         if (selectedAnswer == correctAnswer) {
+            this.totalCorrect++;
             this.assignParty();
         } else {
             console.log("You got it wrong...");
@@ -66,7 +67,7 @@ export default class NPC02 extends Phaser.Sprite {
         this.party.push({ name: 'thief' });
     }
     startBattle(party) {
-        if (this.totalCorrect === 0) {
+        if (this.totalCorrect == 0) {
             this.game.state.start('Preload', true, false);
         } else {
             this.game.music.pause();
